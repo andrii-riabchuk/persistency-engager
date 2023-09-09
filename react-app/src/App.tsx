@@ -1,4 +1,5 @@
 import { ContributionCalendar } from 'react-contribution-calendar'
+import LogToday from './LogToday/LogToday';
 
 function App() {
 
@@ -15,24 +16,26 @@ function App() {
   ]
 
 return (
-<div className="contributionCalendar"> 
-<h1>Contribution Calendar</h1>
-<ContributionCalendar
-  data={data}
-  start="2022-09-09"
-  end="2023-09-09"
-  daysOfTheWeek={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
-  textColor="#1F2328"
-  startsOnSunday={true}
-  includeBoundary={true}
-  theme="grass"
-  cx={10}
-  cy={10}
-  cr={2}
-  onCellClick={(e, data) => console.log(data)}
-  scroll={false}
-  style={{}}
-/> </div>)
+  <div className="contributionCalendar"> 
+    <h1>Contribution Calendar</h1>
+    <ContributionCalendar
+      data={data}
+      start="2022-09-09"
+      end="2023-09-09"
+      daysOfTheWeek={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
+      textColor="#1F2328"
+      startsOnSunday={true}
+      includeBoundary={true}
+      theme="grass"
+      cx={10}
+      cy={10}
+      cr={2}
+      onCellClick={(e, data) => console.log(e, data)}
+      scroll={false}
+      style={{}}/>
+
+    <LogToday/>  
+  </div>)
 }
 
 export default App;
