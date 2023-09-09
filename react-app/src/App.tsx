@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ContributionCalendar } from 'react-contribution-calendar'
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React + </h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  let data : InputData[] = [
+    {
+      '2023-09-07': { level: 2 }
+    },
+    {
+      '2023-09-10': { level: 1 },
+    },
+    {
+      '2023-09-11': { level: 4},
+    }
+  ]
+
+return (
+<div className="contributionCalendar"> 
+<h1>Contribution Calendar</h1>
+<ContributionCalendar
+  data={data}
+  start="2022-09-09"
+  end="2023-09-09"
+  daysOfTheWeek={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
+  textColor="#1F2328"
+  startsOnSunday={true}
+  includeBoundary={true}
+  theme="grass"
+  cx={10}
+  cy={10}
+  cr={2}
+  onCellClick={(e, data) => console.log(data)}
+  scroll={false}
+  style={{}}
+/> </div>)
 }
 
 export default App;
