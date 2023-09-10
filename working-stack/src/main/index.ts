@@ -1,6 +1,8 @@
 import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import fs from 'fs';
+import { Database as SQliteDatabase } from 'sqlite3'
 
 function createWindow(): void {
   // Create the browser window.
@@ -68,3 +70,48 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
+const sqlite3 = require('sqlite3');
+
+let initDb = function(dbPath: string){
+  console.log('Creating new db', dbPath);
+
+  let db = new SQliteDatabase(dbPath, sqlite3.OPEN_CREATE | sqlite3.OPEN_READWRITE);
+  fs.readFile(join(__dirname, '..', '..', 'db', 'schema.sql'), 'utf-8', (err, sql_create_schema)=>{
+    if (err) console.log('Failed to read schema.sql');
+    else 
+      db.exec(sql_create_schema, (err)=>{if (err) console.log('Failed to execute schema.sql')});
+  });
+  
+  // db.each('SELECT * FROM sqlite_master', (err, row)=>{
+  //   console.log('row', row);
+  // });
+}
+
+let userDataDbPath = join(app.getPath("userData"), "userdata.db");
+let db = new SQliteDatabase(userDataDbPath, sqlite3.OPEN_READWRITE, (err) => {
+  if (err)
+    initDb(userDataDbPath);
+  else {
+    console.log('DB already exists');
+    db.close();
+  }
+});
+
+// const db = new sqlite3.Database(join(app.getPath("userData"), "userdata.db"));
+
+// db.serialize(() => {
+//     db.run("CREATE TABLE lorem (info TEXT)");
+
+//     const stmt = db.prepare("INSERT INTO lorem VALUES (?)");
+//     for (let i = 0; i < 10; i++) {
+//         stmt.run("Ipsum " + i);
+//     }
+//     stmt.finalize();
+
+//     db.each("SELECT rowid AS id, info FROM lorem", (err, row) => {
+//         console.log(row.id + ": " + row.info);
+//     });
+// });
+
+// db.close();
