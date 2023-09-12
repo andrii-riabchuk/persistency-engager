@@ -2,21 +2,10 @@ import { ContributionCalendar } from 'react-contribution-calendar'
 import LogToday from './LogToday/LogToday';
 import { useEffect, useState } from 'react'
 
-function lastYearRange(): Date[] {
-  let today = new Date()
-
-  let todayYearAgo = new Date()
-  todayYearAgo.setFullYear(today.getFullYear() - 1)
-
-  return [todayYearAgo, today]
-}
-
-function formatDate(dateTime: Date): string {
-  return dateTime.toISOString().slice(0, 10)
-}
+import timeUtils from '../../utils/time-utils'
 
 function App() {
-  let [YEAR_AGO, TODAY] = lastYearRange().map(formatDate)
+  let [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
 
   let [contributionData, setContributionData] = useState(Array<InputData>)
   let [todayLog, setTodayLog] = useState('')

@@ -3,7 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
 import { dbCheckup } from './database/check-up'
-import dbApi from './database/api'
+import registerEventHandlers from './context-bridge/register-event-handlers'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -45,32 +45,17 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  createWindow()
-
-  // Database HealthCheck
-  dbCheckup()
-
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
-  // TODO:MOVE CONTEXT_BRIDGE_APIS to other place
-  ipcMain.handle('dialog', (event, method, params) => {
-    dialog[method](params)
-  })
+  // HealthCheck
+  dbCheckup()
 
-  ipcMain.handle('getData', (event) => {
-    console.log('getting data')
-    let res = dbApi.getLogEntries()
-    console.log('returning res', res)
-    return res
-  })
+  createWindow()
 
-  ipcMain.handle('setData', (event, input) => {
-    console.log('saving record')
-    let res = dbApi.addOrUpdateLog(input)
-    console.log('res of saving logEntry', res)
-  })
+  // ContextBridge eventHandlers
+  registerEventHandlers()
 })
 
 app.on('window-all-closed', () => {

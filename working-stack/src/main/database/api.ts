@@ -4,6 +4,9 @@ import path from 'path'
 import Database from 'better-sqlite3'
 import queries from './queries'
 
+import timeUtils from '../../utils/time-utils'
+
+// just to import types for typescript intellisense
 import { ContributionCalendar } from 'react-contribution-calendar'
 
 export interface LogTodayEntry {
@@ -14,49 +17,36 @@ export interface LogTodayEntry {
 
 let getDbPath = () => path.join(app.getPath('userData'), 'userdata.db')
 
-function getLogEntries(): InputData[] {
-  let db = loadDB()
-  let logEntries: any[] = db.prepare(queries.GET_LOG_ENTRIES).all()
-  db.close()
-
-  console.log(`${logEntries.length} entries selected`)
-
-  //   let todayEntry = entriesTransformed.find(
-  //     (log) => log.DateTime == new Date().toISOString().slice(0, 10)
-  //   )
-
-  return logEntries
-}
-
-function addOrUpdateLog(input: LogTodayEntry): boolean {
-  let db
-  try {
-    db = loadDB()
-
-    let dateTimeToday = new Date().toISOString().slice(0, 10)
-    let content = input.content
-    let level = input.level
-    let activityType = input.activityType
-
-    let today_entry = db.prepare(queries.GET_LOG_ENTRY_BY_DATE).get(dateTimeToday)
-    if (today_entry) {
-      // SET (Content, Level) WHERE (DateTime)
-      db.prepare(queries.UPDATE_LOG_ENTRY).run(content, level, dateTimeToday)
-    } else {
-      //LogEntry - (DateTime, Content, Level, ActivityTypeId)
-      db.prepare(queries.INSERT_LOG_ENTRY).run(dateTimeToday, content, level, activityType)
-    }
-
-    return true
-  } catch (err) {
-    if (db) db.close()
-    console.log(err)
-    return false
-  }
-}
-
 function loadDB(): Database {
   return new Database(getDbPath())
 }
 
-export default { getLogEntries, addOrUpdateLog }
+function getLogEntryByDate(db: Database, date: string) {
+  return db.prepare(queries.GET_LOG_ENTRY_BY_DATE).get(date)
+}
+
+function insertLogEntry(
+  db: Database,
+  date: string,
+  content: string,
+  level: number,
+  activityTypeId: number
+) {
+  db.prepare(queries.INSERT_LOG_ENTRY).run(date, content, level, activityTypeId)
+}
+
+function updateLogEntry(db, date, content, level) {
+  // SET (Content, Level) WHERE (DateTime)
+  db.prepare(queries.UPDATE_LOG_ENTRY).run(content, level, date)
+}
+
+function insertOrUpdateLogEntry(db, date, content, level, activityTypeId) {
+  let today_entry = getLogEntryByDate(db, date)
+  if (today_entry) {
+    updateLogEntry(db, date, content, level)
+  } else {
+    insertLogEntry(db, date, content, level, activityTypeId)
+  }
+}
+
+export default { loadDB, getLogEntryByDate, insertOrUpdateLogEntry }

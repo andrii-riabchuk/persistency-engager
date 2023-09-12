@@ -1,19 +1,18 @@
+import { app } from 'electron'
 import Database from 'better-sqlite3'
 
-import { app } from 'electron'
 import fs from 'fs'
 import path from 'path'
 
 let getDbPath = () => path.join(app.getPath('userData'), 'userdata.db')
 
 export function dbCheckup() {
-  let dbPath = getDbPath()
+  let userDataPath = getDbPath()
   let db
   try {
-    db = new Database(dbPath, { fileMustExist: true })
-    console.log('DB already exists')
+    db = new Database(userDataPath, { fileMustExist: true })
   } catch (err) {
-    db = initDb(dbPath)
+    db = initDb(userDataPath)
   }
   if (db) db.close()
 }
@@ -32,7 +31,4 @@ function initDb(dbPath: string) {
   })
 
   return db
-  // db.each('SELECT * FROM sqlite_master', (err, row)=>{
-  //   console.log('row', row);
-  // });
 }
