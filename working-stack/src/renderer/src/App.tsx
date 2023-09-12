@@ -11,33 +11,39 @@ function lastYearRange(): Date[] {
   return [todayYearAgo, today]
 }
 
+function formatDate(dateTime: Date): string {
+  return dateTime.toISOString().slice(0, 10)
+}
+
 function App() {
+  let [YEAR_AGO, TODAY] = lastYearRange().map(formatDate)
+
   let [contributionData, setContributionData] = useState(Array<InputData>)
   let [todayLog, setTodayLog] = useState('')
 
   let updateLogState = (content) => {
-    console.log('state updated')
+    console.log('TodayLogstate updated')
     setTodayLog(content)
   }
 
   useEffect(() => {
-    window.api.getData().then((res) => {
-      let [logEntries, todayLog_] = res
-
-      setContributionData(logEntries)
-      setTodayLog(todayLog_?.Content)
+    window.api.getData().then((logEntries: any[]) => {
+      var prepared = logEntries.map((row) => {
+        return { [row.DateTime]: { level: row.Level } }
+      })
+      setContributionData(prepared)
+      let todayLog = logEntries.find((x) => x.DateTime == TODAY)
+      setTodayLog(todayLog?.Content)
     })
   }, [todayLog])
-
-  let [yearAgo, today] = lastYearRange().map((date) => date.toISOString().slice(0, 10))
 
   return (
     <div className="contributionCalendar">
       <h1>Contribution Calendar</h1>
       <ContributionCalendar
         data={contributionData}
-        start={yearAgo}
-        end={today}
+        start={YEAR_AGO}
+        end={TODAY}
         daysOfTheWeek={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
         textColor="#1F2328"
         startsOnSunday={true}
