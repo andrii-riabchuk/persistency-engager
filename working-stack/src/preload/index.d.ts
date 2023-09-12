@@ -4,7 +4,9 @@ declare global {
   interface Window {
     electron: ElectronAPI
     api: {
-      openDialog : (method: string, config: object) => Promise<any>
+      openDialog: (method: string, config: object) => Promise<any>
+      getData: () => Promise<any>
+      updateLogEntry: (input: any) => void
     }
   }
 }

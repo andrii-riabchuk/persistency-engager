@@ -3,7 +3,9 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
 const api = {
-  openDialog: (method, config) => ipcRenderer.invoke('dialog', method, config)
+  openDialog: (method, config) => ipcRenderer.invoke('dialog', method, config),
+  getData: () => ipcRenderer.invoke('getData'),
+  updateLogEntry: (input) => ipcRenderer.invoke('setData', input)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
