@@ -2,8 +2,10 @@ import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
+import { dbCheckup } from './database/check-up'
+import dbApi from './database/api'
+
 function createWindow(): void {
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
@@ -33,11 +35,7 @@ function createWindow(): void {
   }
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 
   // Default open or close DevTools by F12 in development
@@ -49,20 +47,32 @@ app.whenReady().then(() => {
 
   createWindow()
 
+  // Database HealthCheck
+  dbCheckup()
+
   app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
+  // TODO:MOVE CONTEXT_BRIDGE_APIS to other place
   ipcMain.handle('dialog', (event, method, params) => {
-    dialog[method](params);
-  });
+    dialog[method](params)
+  })
+
+  ipcMain.handle('getData', (event) => {
+    console.log('getting data')
+    let res = dbApi.getLogEntries()
+    console.log('returning res', res)
+    return res
+  })
+
+  ipcMain.handle('setData', (event, input) => {
+    console.log('saving record')
+    let res = dbApi.addOrUpdateLog(input)
+    console.log('res of saving logEntry', res)
+  })
 })
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
