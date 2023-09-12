@@ -21,18 +21,15 @@ export function dbCheckup() {
 function initDb(dbPath: string) {
   console.log('Creating new db', dbPath)
 
-  let db = new Database(dbPath)
-  fs.readFile(
+  let db = new Database(dbPath, { verbose: console.log })
+  const sql_create_schema = fs.readFileSync(
     path.join(__dirname, '..', '..', 'db', 'schema.sql'),
-    'utf-8',
-    (err, sql_create_schema) => {
-      if (err) console.log('Failed to read schema.sql')
-      else
-        db.exec(sql_create_schema, (err) => {
-          if (err) console.log('Failed to execute schema.sql')
-        })
-    }
+    'utf8'
   )
+
+  db.exec(sql_create_schema, (err) => {
+    if (err) console.log('Failed to execute schema.sql')
+  })
 
   return db
   // db.each('SELECT * FROM sqlite_master', (err, row)=>{

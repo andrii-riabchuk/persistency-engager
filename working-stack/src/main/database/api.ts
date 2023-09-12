@@ -14,29 +14,18 @@ export interface LogTodayEntry {
 
 let getDbPath = () => path.join(app.getPath('userData'), 'userdata.db')
 
-function getLogEntries(): [InputData[], LogTodayEntry | undefined] {
+function getLogEntries(): InputData[] {
   let db = loadDB()
   let logEntries: any[] = db.prepare(queries.GET_LOG_ENTRIES).all()
-  console.log('select from logentry', logEntries)
-  // let map = logEntries.map()
-  function formatUnixDate(datetimestamp: number) {
-    return new Date(datetimestamp * 1000).toISOString().slice(0, 10)
-  }
-
-  let res = logEntries.map((row) => {
-    return { [formatUnixDate(row.DateTime)]: { level: row.Level } }
-  })
-  console.log(`${res.length} entries selected`)
-
   db.close()
-  let entriesTransformed = logEntries.map((row) => {
-    return { ...row, DateTime: formatUnixDate(row.DateTime) }
-  })
-  let todayEntry = entriesTransformed.find(
-    (log) => log.DateTime == new Date().toISOString().slice(0, 10)
-  )
 
-  return [res, todayEntry]
+  console.log(`${logEntries.length} entries selected`)
+
+  //   let todayEntry = entriesTransformed.find(
+  //     (log) => log.DateTime == new Date().toISOString().slice(0, 10)
+  //   )
+
+  return logEntries
 }
 
 function addOrUpdateLog(input: LogTodayEntry): boolean {
@@ -44,18 +33,18 @@ function addOrUpdateLog(input: LogTodayEntry): boolean {
   try {
     db = loadDB()
 
-    //LogEntry - (DateTime, Content, Level, ActivityTypeId)
-    let today_unix = Math.floor(new Date().setUTCHours(0, 0, 0, 0) / 1000)
+    let dateTimeToday = new Date().toISOString().slice(0, 10)
     let content = input.content
     let level = input.level
     let activityType = input.activityType
 
-    let today_entry = db.prepare(queries.GET_LOG_ENTRY_BY_DATE).get(today_unix)
+    let today_entry = db.prepare(queries.GET_LOG_ENTRY_BY_DATE).get(dateTimeToday)
     if (today_entry) {
       // SET (Content, Level) WHERE (DateTime)
-      db.prepare(queries.UPDATE_LOG_ENTRY).run(content, level, today_unix)
+      db.prepare(queries.UPDATE_LOG_ENTRY).run(content, level, dateTimeToday)
     } else {
-      db.prepare(queries.INSERT_LOG_ENTRY).run(today_unix, content, level, activityType)
+      //LogEntry - (DateTime, Content, Level, ActivityTypeId)
+      db.prepare(queries.INSERT_LOG_ENTRY).run(dateTimeToday, content, level, activityType)
     }
 
     return true

@@ -6,10 +6,11 @@ CREATE TABLE IF NOT EXISTS "ActivityType" (
 );
 CREATE TABLE IF NOT EXISTS "LogEntry" (
 	"Id"	INTEGER NOT NULL,
-	"DateTime"	INTEGER NOT NULL,
+	"DateTime"	TEXT NOT NULL UNIQUE,
 	"Content"	TEXT NOT NULL,
 	"Level"	INTEGER NOT NULL DEFAULT 0,
 	"ActivityTypeId"	INTEGER NOT NULL,
 	PRIMARY KEY("Id" AUTOINCREMENT),
 	FOREIGN KEY("ActivityTypeId") REFERENCES "ActivityType"("Id")
 );
+INSERT INTO ActivityType(Name, Description) VALUES ('General', 'Any activity')
