@@ -7,12 +7,22 @@ import timeUtils from '../../utils/time-utils'
 function App() {
   let [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
 
-  let [contributionData, setContributionData] = useState(Array<InputData>)
-  let [todayLog, setTodayLog] = useState('')
+  let [rerenderNeeded, setRerenderNeeded] = useState(false)
 
-  let updateLogState = (content) => {
+  let [contributionData, setContributionData] = useState(Array<InputData>)
+  let [selectedDate, setSelectedDate] = useState(TODAY)
+  let [selectedDateContent, setSelectedDateContent] = useState({ content: '' })
+
+  let updateSelectedDate = (date: string) => {
+    setSelectedDate(date)
+    console.log('updated selected date state', date)
+    setRerenderNeeded(!rerenderNeeded)
+  }
+
+  let onLogContentUpdate = (contentText) => {
     console.log('TodayLogstate updated')
-    setTodayLog(content)
+
+    setRerenderNeeded(!rerenderNeeded)
   }
 
   useEffect(() => {
@@ -21,10 +31,11 @@ function App() {
         return { [row.DateTime]: { level: row.Level } }
       })
       setContributionData(prepared)
-      let todayLog = logEntries.find((x) => x.DateTime == TODAY)
-      setTodayLog(todayLog?.Content)
+
+      let selectedDayLog_ = logEntries.find((x) => x.DateTime == selectedDate)
+      setSelectedDateContent({ ...selectedDateContent, content: selectedDayLog_?.Content })
     })
-  }, [todayLog])
+  }, [selectedDate, rerenderNeeded])
 
   return (
     <div className="contributionCalendar">
@@ -41,12 +52,18 @@ function App() {
         cx={10}
         cy={10}
         cr={2}
-        onCellClick={(e, data) => console.log(e, data)}
+        onCellClick={(e, data) => updateSelectedDate(data!.date)}
         scroll={false}
         style={{}}
       />
 
-      <LogToday initialValue={todayLog} onLogContentUpdate={updateLogState} />
+      <LogToday
+        selectedDate={selectedDate}
+        initialValue={selectedDateContent.content}
+        readOnly={selectedDate !== TODAY}
+        onLogContentUpdate={onLogContentUpdate}
+        selectTodayDate={() => updateSelectedDate(TODAY)}
+      />
     </div>
   )
 }

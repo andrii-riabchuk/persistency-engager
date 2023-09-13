@@ -10,8 +10,6 @@ interface Cache {
 export class LogEntryService {
   _logEntriesCache: Cache = {}
 
-  constructor() {}
-
   getLastYearLogEntries(reloadCache: boolean = false) {
     let lastYearRange: [string, string] = timeUtils.lastYearRangeFormatted()
     // "'2023-09-11','2023-09-13"
