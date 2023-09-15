@@ -1,0 +1,104 @@
+.logTodayForm {
+  width: 700px;
+  display: flex;
+  align-items: baseline;
+  .log-button{
+    width:75%;
+    outline: none;
+    // fill: currentColor;
+//   height: 100%;
+//   width: 10%;
+  }
+}
+
+.editor-header {
+    display: flex;
+    align-items: center;
+  background-color: black;
+  border-bottom: 3px solid #0d0d0d;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  margin-bottom: 5px;
+
+  .divider {
+    background-color: #ffffff40;
+    height: 1.25rem;
+    margin-left: 0.5rem;
+    margin-right: 0.75rem;
+    width: 1px;
+}
+}
+
+.tiptap-editor {
+    width:600px;
+    padding: 0px 0px 0px 0px;
+  min-height: 200px;
+  background-color: #fff;
+  border: 3px solid #0d0d0d;
+  border-radius: 0.75rem;
+  transition: border-color 0.2s;
+  font-family: Arial, sans-serif;
+  :focus {
+    outline: none !important;
+  }
+}
+
+.tiptap-button {
+  font-size: inherit;
+  font-family: inherit;
+  color: #000;
+  margin: 0.1rem;
+  border: 1px solid black;
+  border-radius: 0.3rem;
+  padding: 0.1rem 0.4rem;
+  background: white;
+  accent-color: black;
+}
+
+.menu-item {
+  background-color: transparent;
+  border: none;
+  border-radius: 0.4rem;
+  color: #fff;
+  cursor: pointer;
+  height: 1.75rem;
+  margin-right: 0.25rem;
+  padding: 0.25rem;
+  width: 1.75rem;
+}
+
+.menu-item svg {
+  fill: currentColor;
+  height: 100%;
+  width: 100%;
+}
+
+.menu-item:hover,
+.menu-item.is-active {
+  background-color: #303030;
+}
+
+.tiptap {
+  > * {
+    //   margin-top: 0.75em;
+    //   margin-left: 0.1em;
+    margin: 0;
+    margin-left: 0.1em;
+  }
+  blockquote {
+    border-left: 3px solid rgba(#0d0d0d, 0.1);
+    padding-left: 1rem;
+  }
+
+  p.is-editor-empty:first-child::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
+  // ul,
+  // ol {
+  //   padding: 0 1rem;
+  // }
+}
