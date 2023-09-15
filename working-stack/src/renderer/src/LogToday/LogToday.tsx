@@ -1,6 +1,7 @@
-import { BaseSyntheticEvent, useEffect, useState } from 'react'
+import { BaseSyntheticEvent, useEffect, useRef, useState } from 'react'
 import TipTapEditor from './TipTapEditor'
 import LogTodayButton from '@renderer/assets/LogTodayButton'
+import { Editor } from '@tiptap/react'
 
 export interface LogTodayEntry {
   content: string
@@ -18,6 +19,7 @@ export default function LogToday({
   let [logContentText_, setLogContentText] = useState(initialValue)
   let [newContentState, setNewContentState] = useState(logContentText_)
 
+  let logInputControl = useRef<Editor>(null)
   console.log('LogTodayComponent', logContentText_)
 
   let setNewContentStateMeta = (obj) => {
@@ -32,8 +34,12 @@ export default function LogToday({
   }, [initialValue, readOnly])
 
   function handleSubmit() {
-    if (readOnly) selectTodayDate()
-    else {
+    console.log('handlesubmit')
+    if (readOnly) {
+      console.log('logInputControl', logInputControl.current)
+      if (logInputControl.current) logInputControl.current.view.dom.focus()
+      selectTodayDate()
+    } else {
       if (logToday(newContentState)) onLogContentUpdate(newContentState)
     }
   }
@@ -63,6 +69,7 @@ export default function LogToday({
           _content={logContentText_}
           setLogContentState={setNewContentStateMeta}
           readOnly={readOnlyState}
+          renameMe={logInputControl}
         ></TipTapEditor>
 
         <LogTodayButton onSubmit={handleSubmit} />
