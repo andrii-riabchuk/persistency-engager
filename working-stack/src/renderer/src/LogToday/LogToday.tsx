@@ -1,4 +1,6 @@
 import { BaseSyntheticEvent, useEffect, useState } from 'react'
+import TipTapEditor from './TipTapEditor'
+import LogTodayButton from '@renderer/assets/LogTodayButton'
 
 export interface LogTodayEntry {
   content: string
@@ -14,18 +16,25 @@ export default function LogToday({
   onLogContentUpdate
 }) {
   let [logContentText_, setLogContentText] = useState(initialValue)
+  let [newContentState, setNewContentState] = useState(logContentText_)
+
+  console.log('LogTodayComponent', logContentText_)
+
+  let setNewContentStateMeta = (obj) => {
+    console.log('setnewcontentstatemeta', obj)
+    setNewContentState(obj)
+  }
+  let [readOnlyState, setReadOnlyState] = useState(readOnly)
 
   useEffect(() => {
     setLogContentText(initialValue)
-  }, [initialValue])
+    setReadOnlyState(readOnly)
+  }, [initialValue, readOnly])
 
-  function handleSubmit(e: BaseSyntheticEvent) {
-    e.preventDefault()
+  function handleSubmit() {
     if (readOnly) selectTodayDate()
     else {
-      const formJson = Object.fromEntries(new FormData(e.target).entries())
-      let logContentText = formJson['logEntry'].toString()
-      if (logToday(logContentText)) onLogContentUpdate(logContentText)
+      if (logToday(newContentState)) onLogContentUpdate(newContentState)
     }
   }
 
@@ -47,18 +56,17 @@ export default function LogToday({
   }
 
   return (
-    <form method="post" onSubmit={handleSubmit}>
+    <>
       <h3>{selectedDate}</h3>
-      <textarea
-        name="logEntry"
-        readOnly={readOnly}
-        placeholder={readOnly ? undefined : "Today I've done..."}
-        value={logContentText_}
-        onChange={(e) => setLogContentText(e.target.value)}
-        rows={5}
-        cols={50}
-      />
-      <button type="submit">LogToday</button>
-    </form>
+      <div className="logTodayForm">
+        <TipTapEditor
+          _content={logContentText_}
+          setLogContentState={setNewContentStateMeta}
+          readOnly={readOnlyState}
+        ></TipTapEditor>
+
+        <LogTodayButton onSubmit={handleSubmit} />
+      </div>
+    </>
   )
 }
