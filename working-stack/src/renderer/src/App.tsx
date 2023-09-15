@@ -1,5 +1,5 @@
 import { ContributionCalendar } from 'react-contribution-calendar'
-import LogToday from './LogToday/LogToday';
+import LogToday from './LogToday/LogToday'
 import { useEffect, useState } from 'react'
 
 import timeUtils from '../../utils/time-utils'
@@ -68,4 +68,4 @@ function App() {
   )
 }
 
-export default App;
+export default App

@@ -2,18 +2,18 @@
   width: 700px;
   display: flex;
   align-items: baseline;
-  .log-button{
-    width:75%;
+  .log-button {
+    width: 75%;
     outline: none;
     // fill: currentColor;
-//   height: 100%;
-//   width: 10%;
+    //   height: 100%;
+    //   width: 10%;
   }
 }
 
 .editor-header {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
   background-color: black;
   border-bottom: 3px solid #0d0d0d;
   border-top-left-radius: 0.25rem;
@@ -26,12 +26,12 @@
     margin-left: 0.5rem;
     margin-right: 0.75rem;
     width: 1px;
-}
+  }
 }
 
 .tiptap-editor {
-    width:600px;
-    padding: 0px 0px 0px 0px;
+  width: 600px;
+  padding: 0px 0px 0px 0px;
   min-height: 200px;
   background-color: #fff;
   border: 3px solid #0d0d0d;
