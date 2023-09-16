@@ -5,21 +5,21 @@ import { useEffect, useState } from 'react'
 import timeUtils from '../../utils/time-utils'
 
 function App() {
-  let [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
+  const [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
 
-  let [rerenderNeeded, setRerenderNeeded] = useState(false)
+  const [rerenderNeeded, setRerenderNeeded] = useState(false)
 
-  let [contributionData, setContributionData] = useState(Array<InputData>)
-  let [selectedDate, setSelectedDate] = useState(TODAY)
-  let [selectedDateContent, setSelectedDateContent] = useState({ content: '' })
+  const [contributionData, setContributionData] = useState(Array<InputData>)
+  const [selectedDate, setSelectedDate] = useState(TODAY)
+  const [selectedDateContent, setSelectedDateContent] = useState({ content: '' })
 
-  let updateSelectedDate = (date: string) => {
+  const updateSelectedDate = (date: string) => {
     setSelectedDate(date)
     console.log('updated selected date state', date)
     setRerenderNeeded(!rerenderNeeded)
   }
 
-  let onLogContentUpdate = (contentText) => {
+  const onLogContentUpdate = (_) => {
     console.log('TodayLogstate updated')
 
     setRerenderNeeded(!rerenderNeeded)
@@ -27,12 +27,12 @@ function App() {
 
   useEffect(() => {
     window.api.getData().then((logEntries: any[]) => {
-      var prepared = logEntries.map((row) => {
+      const prepared = logEntries.map((row) => {
         return { [row.DateTime]: { level: row.Level } }
       })
       setContributionData(prepared)
 
-      let selectedDayLog_ = logEntries.find((x) => x.DateTime == selectedDate)
+      const selectedDayLog_ = logEntries.find((x) => x.DateTime == selectedDate)
       setSelectedDateContent({ ...selectedDateContent, content: selectedDayLog_?.Content })
     })
   }, [selectedDate, rerenderNeeded])
@@ -52,7 +52,7 @@ function App() {
         cx={10}
         cy={10}
         cr={2}
-        onCellClick={(e, data) => updateSelectedDate(data!.date)}
+        onCellClick={(_e, data) => updateSelectedDate(data!.date)}
         scroll={false}
         style={{}}
       />

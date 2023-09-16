@@ -4,10 +4,10 @@ import Database from 'better-sqlite3'
 import fs from 'fs'
 import path from 'path'
 
-let getDbPath = () => path.join(app.getPath('userData'), 'userdata.db')
+const getDbPath = () => path.join(app.getPath('userData'), 'userdata.db')
 
 export function dbCheckup() {
-  let userDataPath = getDbPath()
+  const userDataPath = getDbPath()
   let db
   try {
     db = new Database(userDataPath, { fileMustExist: true })
@@ -20,7 +20,7 @@ export function dbCheckup() {
 function initDb(dbPath: string) {
   console.log('Creating new db', dbPath)
 
-  let db = new Database(dbPath, { verbose: console.log })
+  const db = new Database(dbPath, { verbose: console.log })
   const sql_create_schema = fs.readFileSync(
     path.join(__dirname, '..', '..', 'db', 'schema.sql'),
     'utf8'

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 export default function MenuBar({ editor, readOnly }) {
-  let [disabled, setDisabled] = useState(readOnly)
+  const [disabled, setDisabled] = useState(readOnly)
 
   useEffect(() => {
     setDisabled(readOnly)

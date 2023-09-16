@@ -2,17 +2,17 @@ import { ipcMain, dialog } from 'electron'
 import { LogEntryService } from '../services/logEntryService'
 
 export default function registerEventHandlers() {
-  let logEntryService = new LogEntryService()
+  const logEntryService = new LogEntryService()
 
-  ipcMain.handle('dialog', (event, method, params) => {
+  ipcMain.handle('dialog', (_, method, params) => {
     dialog[method](params)
   })
 
-  ipcMain.handle('getData', (event) => {
+  ipcMain.handle('getData', (_) => {
     return logEntryService.getLastYearLogEntries()
   })
 
-  ipcMain.handle('setData', (event, input) => {
+  ipcMain.handle('setData', (_, input) => {
     logEntryService.addOrUpdateLog(input)
   })
 }

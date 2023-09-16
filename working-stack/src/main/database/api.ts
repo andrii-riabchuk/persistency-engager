@@ -4,18 +4,13 @@ import path from 'path'
 import Database from 'better-sqlite3'
 import queries from './queries'
 
-import timeUtils from '../../utils/time-utils'
-
-// just to import types for typescript intellisense
-import { ContributionCalendar } from 'react-contribution-calendar'
-
 export interface LogTodayEntry {
   content: string
   level: number
   activityType: number
 }
 
-let getDbPath = () => path.join(app.getPath('userData'), 'userdata.db')
+const getDbPath = () => path.join(app.getPath('userData'), 'userdata.db')
 
 function loadDB(): Database {
   return new Database(getDbPath())
@@ -41,7 +36,7 @@ function updateLogEntry(db, date, content, level) {
 }
 
 function insertOrUpdateLogEntry(db, date, content, level, activityTypeId) {
-  let today_entry = getLogEntryByDate(db, date)
+  const today_entry = getLogEntryByDate(db, date)
   if (today_entry) {
     updateLogEntry(db, date, content, level)
   } else {

@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import TipTapEditor from './TipTapEditor'
 import LogTodayButton from '@renderer/assets/LogTodayButton'
 import { Editor } from '@tiptap/react'
@@ -16,17 +16,17 @@ export default function LogToday({
   selectTodayDate,
   onLogContentUpdate
 }) {
-  let [logContentText_, setLogContentText] = useState(initialValue)
-  let [newContentState, setNewContentState] = useState(logContentText_)
+  const [logContentText_, setLogContentText] = useState(initialValue)
+  const [newContentState, setNewContentState] = useState(logContentText_)
 
-  let logInputControl = useRef<Editor>(null)
+  const logInputControl = useRef<Editor>(null)
   console.log('LogTodayComponent', logContentText_)
 
-  let setNewContentStateMeta = (obj) => {
+  const setNewContentStateMeta = (obj) => {
     console.log('setnewcontentstatemeta', obj)
     setNewContentState(obj)
   }
-  let [readOnlyState, setReadOnlyState] = useState(readOnly)
+  const [readOnlyState, setReadOnlyState] = useState(readOnly)
 
   useEffect(() => {
     setLogContentText(initialValue)
@@ -46,7 +46,7 @@ export default function LogToday({
 
   function logToday(text): boolean {
     if (text) {
-      let input: LogTodayEntry = { content: text, level: 1, activityType: 1 }
+      const input: LogTodayEntry = { content: text, level: 1, activityType: 1 }
       window.api.updateLogEntry(input)
     } else {
       const dialogConfig = {
