@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import icons from '../assets/remixicon.symbol.d4b9d612.svg'
+
 export default function MenuBar({ editor, readOnly }) {
   let [disabled, setDisabled] = useState(readOnly)
 
@@ -31,7 +33,7 @@ export default function MenuBar({ editor, readOnly }) {
         disabled={disabled}
       >
         <svg className="remix">
-          <use xlinkHref="/src/assets/remixicon.symbol.d4b9d612.svg#ri-bold"></use>
+          <use xlinkHref={`${icons}#ri-bold`} />
         </svg>
       </button>
       <button
@@ -41,7 +43,7 @@ export default function MenuBar({ editor, readOnly }) {
         disabled={disabled}
       >
         <svg className="remix">
-          <use xlinkHref="/src/assets/remixicon.symbol.d4b9d612.svg#ri-italic"></use>
+          <use xlinkHref={`${icons}#ri-italic`} />
         </svg>
       </button>
       <button
@@ -53,7 +55,7 @@ export default function MenuBar({ editor, readOnly }) {
         disabled={disabled}
       >
         <svg className="remix">
-          <use xlinkHref="/src/assets/remixicon.symbol.d4b9d612.svg#ri-strikethrough"></use>
+          <use xlinkHref={`${icons}#ri-strikethrough`} />
         </svg>
       </button>
       {/* <button className="menu-item" title="Code">
@@ -68,7 +70,7 @@ export default function MenuBar({ editor, readOnly }) {
         disabled={disabled}
       >
         <svg className="remix">
-          <use xlinkHref="/src/assets/remixicon.symbol.d4b9d612.svg#ri-mark-pen-line"></use>
+          <use xlinkHref={`${icons}#ri-mark-pen-line`} />
         </svg>
       </button>
 
@@ -96,7 +98,7 @@ export default function MenuBar({ editor, readOnly }) {
         disabled={disabled}
       >
         <svg className="remix">
-          <use xlinkHref="/src/assets/remixicon.symbol.d4b9d612.svg#ri-list-unordered"></use>
+          <use xlinkHref={`${icons}#ri-list-unordered`} />
         </svg>
       </button>
       <button
@@ -106,7 +108,7 @@ export default function MenuBar({ editor, readOnly }) {
         disabled={disabled}
       >
         <svg className="remix">
-          <use xlinkHref="/src/assets/remixicon.symbol.d4b9d612.svg#ri-list-ordered"></use>
+          <use xlinkHref={`${icons}#ri-list-ordered`} />
         </svg>
       </button>
       {/* <button className="menu-item" title="Task List">
@@ -126,7 +128,7 @@ export default function MenuBar({ editor, readOnly }) {
         disabled={disabled}
       >
         <svg className="remix">
-          <use xlinkHref="/src/assets/remixicon.symbol.d4b9d612.svg#ri-separator"></use>
+          <use xlinkHref={`${icons}#ri-separator`} />
         </svg>
       </button>
       {/* <button className="menu-item" title="Horizontal Rule">
@@ -152,7 +154,7 @@ export default function MenuBar({ editor, readOnly }) {
         disabled={disabled}
       >
         <svg className="remix">
-          <use xlinkHref="/src/assets/remixicon.symbol.d4b9d612.svg#ri-format-clear"></use>
+          <use xlinkHref={`${icons}#ri-format-clear`} />
         </svg>
       </button>
 
@@ -165,7 +167,7 @@ export default function MenuBar({ editor, readOnly }) {
         disabled={disabled}
       >
         <svg className="remix">
-          <use xlinkHref="/src/assets/remixicon.symbol.d4b9d612.svg#ri-arrow-go-back-line"></use>
+          <use xlinkHref={`${icons}#ri-arrow-go-back-line`} />
         </svg>
       </button>
       <button
@@ -175,7 +177,7 @@ export default function MenuBar({ editor, readOnly }) {
         disabled={disabled}
       >
         <svg className="remix">
-          <use xlinkHref="/src/assets/remixicon.symbol.d4b9d612.svg#ri-arrow-go-forward-line"></use>
+          <use xlinkHref={`${icons}#ri-arrow-go-forward-line`} />
         </svg>
       </button>
     </div>

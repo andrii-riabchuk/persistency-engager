@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: working-stack
+appId: andrii.riabchuk.weirdo
+productName: persistency-engager
 directories:
   buildResources: build
 files:
@@ -12,7 +12,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: working-stack
+  executableName: persistency-engager
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
