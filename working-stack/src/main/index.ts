@@ -9,6 +9,7 @@ function createWindow(): void {
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
+    title: 'Persistency Engager',
     show: false,
     autoHideMenuBar: true,
     webPreferences: {

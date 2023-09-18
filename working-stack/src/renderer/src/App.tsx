@@ -39,7 +39,7 @@ function App() {
 
   return (
     <div className="contributionCalendar">
-      <h1>Contribution Calendar</h1>
+      <h1>Coding</h1>
       <ContributionCalendar
         data={contributionData}
         start={YEAR_AGO}
