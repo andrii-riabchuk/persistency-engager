@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import icons from '../assets/remixicon.symbol.d4b9d612.svg'
+import copyTextIcon from '../assets/copy-text-svgrepo-com.svg'
 
 export default function MenuBar({ editor, readOnly }) {
   let [disabled, setDisabled] = useState(readOnly)
@@ -178,6 +179,17 @@ export default function MenuBar({ editor, readOnly }) {
       >
         <svg className="remix">
           <use xlinkHref={`${icons}#ri-arrow-go-forward-line`} />
+        </svg>
+      </button>
+      <button
+        onClick={() => {
+          let text = editor?.getText()
+          navigator.clipboard.writeText(text)
+        }}
+        className="menu-item copy-button"
+      >
+        <svg className="copy-button_icon">
+          <use xlinkHref={`${copyTextIcon}#Capa_1`} />
         </svg>
       </button>
     </div>
