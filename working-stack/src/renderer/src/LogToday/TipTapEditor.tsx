@@ -62,16 +62,12 @@ const extensions = [
 ]
 
 export default function TipTapEditor({ _content, setLogContentState, readOnly, renameMe }) {
-  let [contentState, setContentState] = useState(_content)
-
   let editor = useEditor({
     extensions: extensions,
     content: _content,
     onUpdate({ editor }) {
       console.log('updated', editor.getHTML())
-      setContentState(editor.getHTML())
       setLogContentState(editor.getHTML())
-      //   setLogContentState(editor)
     }
   })
   renameMe.current = editor

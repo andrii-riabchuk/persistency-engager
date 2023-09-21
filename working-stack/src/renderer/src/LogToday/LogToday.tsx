@@ -9,6 +9,13 @@ export interface LogTodayEntry {
   activityType: number
 }
 
+function hasContent(content: string): boolean {
+  const EMPTY_PARAGRAPH = '<p></p>'
+  if (content && content != EMPTY_PARAGRAPH) return true
+
+  return false
+}
+
 export default function LogToday({
   readOnly,
   initialValue = '',
@@ -45,7 +52,7 @@ export default function LogToday({
   }
 
   function logToday(text): boolean {
-    if (text) {
+    if (hasContent(text)) {
       let input: LogTodayEntry = { content: text, level: 1, activityType: 1 }
       window.api.updateLogEntry(input)
     } else {
