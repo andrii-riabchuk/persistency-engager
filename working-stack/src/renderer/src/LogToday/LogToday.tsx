@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import TipTapEditor from './TipTapEditor'
 import LogTodayButton from '@renderer/assets/LogTodayButton'
 import { Editor } from '@tiptap/react'

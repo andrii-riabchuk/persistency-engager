@@ -11,14 +11,7 @@ import Blockquote from '@tiptap/extension-blockquote'
 
 import PlaceHolder from '@tiptap/extension-placeholder'
 
-import {
-  BubbleMenu,
-  Editor,
-  EditorContent,
-  FloatingMenu,
-  createDocument,
-  useEditor
-} from '@tiptap/react'
+import { EditorContent, createDocument, useEditor } from '@tiptap/react'
 import Document from '@tiptap/extension-document'
 import History from '@tiptap/extension-history'
 import { EditorState } from 'prosemirror-state'
@@ -26,11 +19,10 @@ import { EditorState } from 'prosemirror-state'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 
-import React, { Dispatch, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import MenuBar from './Menu'
 
 const extensions = [
-  //   StarterKit,
   Document,
   Paragraph,
   Text,
