@@ -27,10 +27,8 @@ export default function LogToday({
   let [newContentState, setNewContentState] = useState(logContentText_)
 
   let logInputControl = useRef<Editor>(null)
-  console.log('LogTodayComponent', logContentText_)
 
   let setNewContentStateMeta = (obj) => {
-    console.log('setnewcontentstatemeta', obj)
     setNewContentState(obj)
   }
   let [readOnlyState, setReadOnlyState] = useState(readOnly)
@@ -43,7 +41,6 @@ export default function LogToday({
   function handleSubmit() {
     console.log('handlesubmit')
     if (readOnly) {
-      console.log('logInputControl', logInputControl.current)
       if (logInputControl.current) logInputControl.current.view.dom.focus()
       selectTodayDate()
     } else {
