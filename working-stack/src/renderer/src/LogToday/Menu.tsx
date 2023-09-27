@@ -14,7 +14,6 @@ export default function MenuBar({ editor, readOnly }) {
     <div
       className="editor-header"
       onClick={(e) => {
-        console.log('Menu click event')
         e.stopPropagation()
       }}
     >

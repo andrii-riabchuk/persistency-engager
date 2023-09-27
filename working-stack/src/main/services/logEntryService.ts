@@ -28,17 +28,6 @@ export class LogEntryService {
     db.close()
 
     console.log(`${logEntries.length} entries selected`)
-
-    return logEntries
-  }
-
-  getLogEntriesFromDB(): InputData[] {
-    let db = dbApi.loadDB()
-    let logEntries: any[] = db.prepare(queries.GET_LOG_ENTRIES).all()
-    db.close()
-
-    console.log(`${logEntries.length} entries selected`)
-
     return logEntries
   }
 

@@ -4,11 +4,6 @@ import path from 'path'
 import Database from 'better-sqlite3'
 import queries from './queries'
 
-import timeUtils from '../../utils/time-utils'
-
-// just to import types for typescript intellisense
-import { ContributionCalendar } from 'react-contribution-calendar'
-
 export interface LogTodayEntry {
   content: string
   level: number
