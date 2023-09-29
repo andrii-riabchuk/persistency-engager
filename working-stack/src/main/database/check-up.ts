@@ -6,7 +6,7 @@ import path from 'path'
 
 let getDbPath = () => path.join(app.getPath('userData'), 'userdata.db')
 
-export function dbCheckup() {
+export function databaseHealthCheck() {
   let userDataPath = getDbPath()
   let db
   try {
