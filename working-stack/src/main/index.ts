@@ -1,11 +1,12 @@
-import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
+import { app, shell, BrowserWindow, Tray, Menu, ipcMain, dialog, nativeImage } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
-import { dbCheckup } from './database/check-up'
+import { databaseHealthCheck } from './database/check-up'
 import registerEventHandlers from './context-bridge/register-event-handlers'
+import { TRAY_ICON } from './services/trayicon'
 
-function createWindow(): void {
+function createWindow(): BrowserWindow {
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
@@ -34,6 +35,23 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  return mainWindow
+}
+
+function createTray() {
+  let tray = new Tray(nativeImage.createFromDataURL(TRAY_ICON))
+  tray.on('click', (e) => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+
+  const menu = Menu.buildFromTemplate([
+    { type: 'separator' },
+    { role: 'quit' } // "Exit" button
+  ])
+
+  tray.setToolTip('Persistency Engager')
+  tray.setContextMenu(menu)
 }
 
 app.whenReady().then(() => {
@@ -50,17 +68,19 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
-  // HealthCheck
-  dbCheckup()
+  databaseHealthCheck()
 
   createWindow()
+  createTray()
 
-  // ContextBridge eventHandlers
+  // ContextBridge events
   registerEventHandlers()
 })
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+// Turned off - decided to put application to tray when window closed
+
+// app.on('window-all-closed', () => {
+//   if (process.platform !== 'darwin') {
+//     app.quit()
+//   }
+// })
