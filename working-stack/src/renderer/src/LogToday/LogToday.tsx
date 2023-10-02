@@ -16,15 +16,8 @@ function hasContent(content: string): boolean {
   return false
 }
 
-export default function LogToday({
-  readOnly,
-  initialValue = '',
-  selectedDate,
-  selectTodayDate,
-  onLogContentUpdate
-}) {
-  console.log('LogToday init', readOnly)
-  let [logContentText_, setLogContentText] = useState(initialValue)
+export default function LogToday({ readOnly, selectedDate, selectTodayDate, onLogContentUpdate }) {
+  let [logContentText_, setLogContentText] = useState('')
   let [newContentState, setNewContentState] = useState(logContentText_)
 
   let logInputControl = useRef<Editor>(null)
@@ -32,27 +25,24 @@ export default function LogToday({
   let setNewContentStateMeta = (obj) => {
     setNewContentState(obj)
   }
-  let [readOnlyState, setReadOnlyState] = useState(readOnly)
 
   useEffect(() => {
-    let logEntry = window.api.getLogForDate(selectedDate).then((logContent) => {
+    window.api.getLogForDate(selectedDate).then((logContent) => {
       if (logContent) setLogContentText(logContent.Content)
-      console.log('tried to retrieve logEntry from cache -- ', logContent)
+      else setLogContentText('')
     })
-    setReadOnlyState(readOnly)
-  }, [selectedDate, readOnly])
+  }, [selectedDate])
 
   function handleSubmit() {
-    console.log('handlesubmit')
     if (readOnly) {
       if (logInputControl.current) logInputControl.current.view.dom.focus()
       selectTodayDate()
     } else {
-      if (logToday(newContentState)) onLogContentUpdate(newContentState)
+      if (tryLogToday(newContentState)) onLogContentUpdate()
     }
   }
 
-  function logToday(text): boolean {
+  function tryLogToday(text): boolean {
     if (hasContent(text)) {
       let input: LogTodayEntry = { content: text, level: 1, activityType: 1 }
       window.api.updateLogEntry(input)
@@ -74,9 +64,10 @@ export default function LogToday({
       <h3>{selectedDate}</h3>
       <div className="logTodayForm">
         <TipTapEditor
+          key={selectedDate}
           _content={logContentText_}
           setLogContentState={setNewContentStateMeta}
-          readOnly={readOnlyState}
+          readOnly={readOnly}
           renameMe={logInputControl}
         ></TipTapEditor>
 

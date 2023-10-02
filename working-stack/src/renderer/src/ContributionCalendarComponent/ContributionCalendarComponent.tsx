@@ -3,16 +3,11 @@ import { ContributionCalendar } from 'react-contribution-calendar'
 import timeUtils from '../../../utils/time-utils'
 
 export default function ContributionCalendarComponent({ onGraphCellClick }) {
-  console.log('init ContributionCalendarComponent')
   let [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
 
   let [contributionData, setContributionData] = useState(Array<InputData>)
 
-  let [selectedDate, setSelectedDate] = useState(TODAY)
-  //   let [selectedDateContent, setSelectedDateContent] = useState({ content: '' })
-
   useEffect(() => {
-    console.log('useEffect popayalo')
     window.api.getData().then((logEntries: any[]) => {
       var prepared = logEntries.map((row) => {
         return { [row.DateTime]: { level: row.Level } }
@@ -20,10 +15,6 @@ export default function ContributionCalendarComponent({ onGraphCellClick }) {
       setContributionData(prepared)
     })
   }, [])
-
-  let updateSelectedDate = (date: string) => {
-    setSelectedDate(date)
-  }
 
   function onCellClick(data) {
     let dateSelected = data!.date

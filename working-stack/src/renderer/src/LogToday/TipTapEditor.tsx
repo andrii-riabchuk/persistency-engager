@@ -19,7 +19,7 @@ import { EditorState } from 'prosemirror-state'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import MenuBar from './Menu'
 
 const extensions = [
@@ -58,15 +58,15 @@ export default function TipTapEditor({ _content, setLogContentState, readOnly, r
     extensions: extensions,
     content: _content,
     onUpdate({ editor }) {
-      console.log('updated', editor.getHTML())
+      // console.log('updated', editor.getHTML())
       setLogContentState(editor.getHTML())
-    }
+    },
+    editable: !readOnly
   })
   renameMe.current = editor
 
   useEffect(() => {
     if (editor) {
-      console.log(editor)
       const newState = EditorState.create({
         doc: createDocument(_content, editor.schema),
         schema: editor.schema,
