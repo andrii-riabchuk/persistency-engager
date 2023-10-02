@@ -23,6 +23,7 @@ export default function LogToday({
   selectTodayDate,
   onLogContentUpdate
 }) {
+  console.log('LogToday init', readOnly)
   let [logContentText_, setLogContentText] = useState(initialValue)
   let [newContentState, setNewContentState] = useState(logContentText_)
 
@@ -34,9 +35,12 @@ export default function LogToday({
   let [readOnlyState, setReadOnlyState] = useState(readOnly)
 
   useEffect(() => {
-    setLogContentText(initialValue)
+    let logEntry = window.api.getLogForDate(selectedDate).then((logContent) => {
+      if (logContent) setLogContentText(logContent.Content)
+      console.log('tried to retrieve logEntry from cache -- ', logContent)
+    })
     setReadOnlyState(readOnly)
-  }, [initialValue, readOnly])
+  }, [selectedDate, readOnly])
 
   function handleSubmit() {
     console.log('handlesubmit')

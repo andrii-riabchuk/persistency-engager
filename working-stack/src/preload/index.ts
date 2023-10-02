@@ -5,6 +5,7 @@ import { electronAPI } from '@electron-toolkit/preload'
 const api = {
   openDialog: (method, config) => ipcRenderer.invoke('dialog', method, config),
   getData: () => ipcRenderer.invoke('getData'),
+  getLogForDate: (selectedDate: string) => ipcRenderer.invoke('getLogForDate', selectedDate),
   updateLogEntry: (input) => ipcRenderer.invoke('setData', input)
 }
 
