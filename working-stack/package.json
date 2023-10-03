@@ -32,6 +32,7 @@
     "@tiptap/react": "^2.1.8",
     "@tiptap/starter-kit": "^2.1.8",
     "better-sqlite3": "^8.6.0",
+    "cron": "^3.0.0",
     "electron-updater": "^6.1.1",
     "react-contribution-calendar": "^1.3.5"
   },

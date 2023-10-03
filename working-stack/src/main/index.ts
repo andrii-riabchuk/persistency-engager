@@ -1,10 +1,41 @@
-import { app, shell, BrowserWindow, Tray, Menu, ipcMain, dialog, nativeImage } from 'electron'
+import {
+  app,
+  shell,
+  BrowserWindow,
+  Tray,
+  Menu,
+  ipcMain,
+  dialog,
+  nativeImage,
+  Notification
+} from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
 import { databaseHealthCheck } from './database/check-up'
 import registerEventHandlers from './context-bridge/register-event-handlers'
 import { TRAY_ICON } from './services/trayicon'
+
+import { CronJob } from 'cron'
+
+const NOTIFICATION_TITLE = 'Шухер'
+const NOTIFICATION_BODY = 'Ти гадину бачів? \nПісяти і логувати'
+
+function showNotification() {
+  let notification = new Notification({ title: NOTIFICATION_TITLE, body: NOTIFICATION_BODY })
+
+  notification.show()
+
+  notification.on('click', (event) => {
+    console.log('notification clicked', event)
+    let windows = BrowserWindow.getAllWindows()
+    if (windows.length) {
+      windows[0].focus()
+    } else createWindow()
+  })
+}
+
+const job = new CronJob('00 59 22 * * *', showNotification, null, true)
 
 function createWindow(): BrowserWindow {
   const mainWindow = new BrowserWindow({
@@ -79,8 +110,8 @@ app.whenReady().then(() => {
 
 // Turned off - decided to put application to tray when window closed
 
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') {
-//     app.quit()
-//   }
-// })
+app.on('window-all-closed', () => {
+  // if (process.platform !== 'darwin') {
+  //   app.quit()
+  // }
+})
