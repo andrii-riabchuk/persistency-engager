@@ -1,8 +1,49 @@
-import ContributionCalendarComponent from './ContributionCalendarComponent/ContributionCalendarComponent'
-import LogToday from './LogToday/LogToday'
 import { useEffect, useState } from 'react'
+import { ContributionCalendar } from 'react-contribution-calendar'
+import timeUtils from '../../../utils/time-utils'
 
-import timeUtils from '../../utils/time-utils'
+export default function ContributionCalendarComponent({ onGraphCellClick }) {
+  let [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
+
+  let [contributionData, setContributionData] = useState(Array<InputData>)
+
+  useEffect(() => {
+    window.api.getData().then((logEntries: any[]) => {
+      var prepared = logEntries.map((row) => {
+        return { [row.DateTime]: { level: row.Level } }
+      })
+      setContributionData(prepared)
+    })
+  }, [])
+
+  function onCellClick(data) {
+    let dateSelected = data!.date
+    onGraphCellClick(dateSelected)
+  }
+
+  return (
+    <>
+      <div className="activity-graph" onKeyDown={controlCalendarWithArrowKeys}>
+        <ContributionCalendar
+          data={contributionData}
+          start={YEAR_AGO}
+          end={TODAY}
+          daysOfTheWeek={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
+          textColor="#1F2328"
+          startsOnSunday={true}
+          includeBoundary={true}
+          theme="grass"
+          cx={10}
+          cy={10}
+          cr={2}
+          onCellClick={(e, data) => onCellClick(data)}
+          scroll={false}
+          style={{}}
+        />
+      </div>
+    </>
+  )
+}
 
 function controlCalendarWithArrowKeys(e) {
   // quit if not arrow key
@@ -57,29 +98,3 @@ function controlCalendarWithArrowKeys(e) {
     }
   }
 }
-
-function App() {
-  let [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
-
-  let [selectedDate, setSelectedDate] = useState(TODAY)
-
-  let [calendarRender, setCalendarRender] = useState(0)
-  let rerenderCalendar = () => setCalendarRender(calendarRender + 1)
-
-  return (
-    <div className="contributionCalendar">
-      <h1>Coding</h1>
-      <ContributionCalendarComponent key={calendarRender} onGraphCellClick={setSelectedDate} />
-
-      <LogToday
-        key={selectedDate}
-        selectedDate={selectedDate}
-        readOnly={selectedDate !== TODAY}
-        onLogContentUpdate={rerenderCalendar}
-        selectTodayDate={() => setSelectedDate(TODAY)}
-      />
-    </div>
-  )
-}
-
-export default App

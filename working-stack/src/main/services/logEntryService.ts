@@ -10,6 +10,15 @@ interface Cache {
 export class LogEntryService {
   _logEntriesCache: Cache = {}
 
+  getLogEntry(selectedDate: string) {
+    let key = Object.keys(this._logEntriesCache)[0]
+    let logEntries = this._logEntriesCache[key]
+
+    let selectedDayLog = logEntries.find((x) => x.DateTime == selectedDate)
+    return selectedDayLog
+    //     setSelectedDateContent({ ...selectedDateContent, content: selectedDayLog_?.Content })
+  }
+
   getLastYearLogEntries(reloadCache: boolean = false) {
     let lastYearRange: [string, string] = timeUtils.lastYearRangeFormatted()
     // "'2023-09-11','2023-09-13"

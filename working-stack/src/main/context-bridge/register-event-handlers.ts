@@ -12,6 +12,10 @@ export default function registerEventHandlers() {
     return logEntryService.getLastYearLogEntries()
   })
 
+  ipcMain.handle('getLogForDate', (event, selectedDate) => {
+    return logEntryService.getLogEntry(selectedDate)
+  })
+
   ipcMain.handle('setData', (event, input) => {
     logEntryService.addOrUpdateLog(input)
   })
