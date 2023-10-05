@@ -4,6 +4,8 @@ import { electronAPI } from '@electron-toolkit/preload'
 // Custom APIs for renderer
 const api = {
   openDialog: (method, config) => ipcRenderer.invoke('dialog', method, config),
+  getActivityName: () => ipcRenderer.invoke('getActivityName'),
+  setActivityName: (newName: string) => ipcRenderer.invoke('setActivityName', newName),
   getData: () => ipcRenderer.invoke('getData'),
   getLogForDate: (selectedDate: string) => ipcRenderer.invoke('getLogForDate', selectedDate),
   updateLogEntry: (input) => ipcRenderer.invoke('setData', input)
