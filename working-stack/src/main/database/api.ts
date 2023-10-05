@@ -1,4 +1,4 @@
-import { app } from 'electron'
+import { Data, app } from 'electron'
 import path from 'path'
 
 import Database from 'better-sqlite3'
@@ -14,6 +14,10 @@ let getDbPath = () => path.join(app.getPath('userData'), 'userdata.db')
 
 function loadDB(): Database {
   return new Database(getDbPath())
+}
+
+function getActivities(db: Database): object {
+  return db.prepare(queries.GET_ACTIVITIES).get()
 }
 
 function getLogEntryByDate(db: Database, date: string) {
@@ -44,4 +48,4 @@ function insertOrUpdateLogEntry(db, date, content, level, activityTypeId) {
   }
 }
 
-export default { loadDB, getLogEntryByDate, insertOrUpdateLogEntry }
+export default { loadDB, getActivities, getLogEntryByDate, insertOrUpdateLogEntry }

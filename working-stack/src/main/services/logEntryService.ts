@@ -10,6 +10,22 @@ interface Cache {
 export class LogEntryService {
   _logEntriesCache: Cache = {}
 
+  getActivityName(): string {
+    console.log('LogEntryService: getting ActivityName')
+    let db = dbApi.loadDB()
+    let mainActivity = dbApi.getActivities(db)
+    db.close()
+
+    return mainActivity['Name']
+  }
+
+  updateActivityName(newName: any): any {
+    let db = dbApi.loadDB()
+
+    db.prepare(`UPDATE ActivityType SET [Name] = '${newName}' WHERE [Id] = 1`).run()
+    db.close()
+  }
+
   getLogEntry(selectedDate: string) {
     let key = Object.keys(this._logEntriesCache)[0]
     let logEntries = this._logEntriesCache[key]
@@ -49,5 +65,7 @@ export class LogEntryService {
 
     // reload for cache
     this.getLastYearLogEntries(true)
+
+    db.close()
   }
 }

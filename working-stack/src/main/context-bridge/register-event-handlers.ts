@@ -8,6 +8,14 @@ export default function registerEventHandlers() {
     dialog[method](params)
   })
 
+  ipcMain.handle('getActivityName', (event) => {
+    return logEntryService.getActivityName()
+  })
+
+  ipcMain.handle('setActivityName', (event, newName) => {
+    return logEntryService.updateActivityName(newName)
+  })
+
   ipcMain.handle('getData', (event) => {
     return logEntryService.getLastYearLogEntries()
   })
