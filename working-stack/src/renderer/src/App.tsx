@@ -26,7 +26,10 @@ function App() {
     setActivityName(draftActivityName)
     setShow(false)
   }
-  const handleShow = () => setShow(true)
+  const handleShow = () => {
+    setShow(true)
+    setDraftActivityName(activityName)
+  }
 
   let [selectedDate, setSelectedDate] = useState(TODAY)
 
@@ -36,6 +39,13 @@ function App() {
   useEffect(() => {
     window.api.getActivityName().then(setActivityName)
   }, [])
+
+  function handleEnterPress(target) {
+    if (target.charCode == 13) {
+      target.preventDefault()
+      handleSave()
+    }
+  }
 
   return (
     <div className="contributionCalendar">
@@ -69,8 +79,9 @@ function App() {
               <Form.Label style={{ paddingRight: '10px' }}>Activity Name</Form.Label>
               <Form.Control
                 type="name"
-                value={draftActivityName == '' ? activityName : draftActivityName}
+                value={draftActivityName}
                 onChange={(e) => setDraftActivityName(e.target.value)}
+                onKeyPress={handleEnterPress}
               />
             </Form.Group>
           </Form>
@@ -79,7 +90,7 @@ function App() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSave}>
+          <Button type="button" variant="primary" onClick={handleSave}>
             Save Changes
           </Button>
         </Modal.Footer>
