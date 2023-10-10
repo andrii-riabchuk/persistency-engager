@@ -50,6 +50,7 @@ function App() {
       <ContributionCalendarComponent key={calendarRender} onGraphCellClick={setSelectedDate} />
 
       <Modal
+        className="settings-dialog"
         show={show}
         animation={false}
         onHide={handleClose}
@@ -83,6 +84,7 @@ function App() {
           </Button>
         </Modal.Footer>
       </Modal>
+
       <LogToday
         key={selectedDate}
         selectedDate={selectedDate}
