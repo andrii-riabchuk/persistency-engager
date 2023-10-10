@@ -81,8 +81,12 @@
     pointer-events: auto;
     background-color: var(--bs-modal-bg);
     background-clip: padding-box;
-    border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
-    border-radius: var(--bs-modal-border-radius);
+    
+    border: solid;
+    border-width: 2px;
+    border-radius: 1%;
+    border-color: black;
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.5);
     outline: 0;
   }
 
