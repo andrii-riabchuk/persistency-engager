@@ -40,8 +40,8 @@ export class LogEntryService {
     // "'2023-09-11','2023-09-13"
     let key = lastYearRange.toString()
 
-    if (!this._logEntriesCache[key] || reloadCache)
-      this._logEntriesCache[key] = this.getLogEntriesForDateRange(...lastYearRange)
+    // if (!this._logEntriesCache[key] || reloadCache)
+    this._logEntriesCache[key] = this.getLogEntriesForDateRange(...lastYearRange)
 
     console.log('retrieved from cache')
     return this._logEntriesCache[key]
