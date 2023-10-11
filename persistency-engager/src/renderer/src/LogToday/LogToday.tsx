@@ -2,19 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import TipTapEditor from './TipTapEditor'
 import LogTodayButton from '@renderer/assets/LogTodayButton'
 import { Editor } from '@tiptap/react'
-
-export interface LogTodayEntry {
-  content: string
-  level: number
-  activityType: number
-}
-
-function hasContent(content: string): boolean {
-  const EMPTY_PARAGRAPH = '<p></p>'
-  if (content && content != EMPTY_PARAGRAPH) return true
-
-  return false
-}
+import { tryLogToday } from './logTodayService'
 
 export default function LogToday({
   readOnly,
@@ -45,33 +33,15 @@ export default function LogToday({
     }
   }
 
-  function tryLogToday(text): boolean {
-    if (hasContent(text)) {
-      let input: LogTodayEntry = { content: text, level: 1, activityType: 1 }
-      window.api.updateLogEntry(input)
-    } else {
-      const dialogConfig = {
-        title: 'Fuck_U_Man',
-        message: 'What is wrong with you?'
-      }
-      window.api.openDialog('showMessageBox', dialogConfig)
-
-      return false
-    }
-
-    return true
-  }
-
   return (
     <>
       <h3>{selectedDate}</h3>
       <div className="logTodayForm">
         <TipTapEditor
-          // key={selectedDate}
           _content={logContentText_}
           setLogContentState={setNewContentStateMeta}
           readOnly={readOnly}
-          renameMe={logInputControl}
+          refForAutoFocus={logInputControl}
         ></TipTapEditor>
 
         <LogTodayButton onSubmit={handleSubmit} />
