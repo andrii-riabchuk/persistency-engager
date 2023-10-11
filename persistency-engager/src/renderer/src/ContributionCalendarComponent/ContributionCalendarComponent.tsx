@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ContributionCalendar } from 'react-contribution-calendar'
 import timeUtils from '../../../utils/time-utils'
+import './ContributionCalendarComponent.css'
 
 export default function ContributionCalendarComponent({ onGraphCellClick }) {
   let [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
@@ -13,6 +14,7 @@ export default function ContributionCalendarComponent({ onGraphCellClick }) {
         return { [row.DateTime]: { level: row.Level } }
       })
       setContributionData(prepared)
+      focusTodayCell()
     })
   }, [])
 
@@ -43,6 +45,29 @@ export default function ContributionCalendarComponent({ onGraphCellClick }) {
       </div>
     </>
   )
+}
+
+//Probably unsafe code, but IDK
+function focusTodayCell() {
+  function formatDate(date) {
+    const options = {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    }
+
+    return date.toLocaleDateString('en-US', options)
+  }
+
+  const date = new Date()
+  const formattedDate = formatDate(date)
+
+  let nodeList = document.querySelectorAll(`[data-tooltip="${formattedDate}"]`)
+  if (nodeList) {
+    let todayCell = nodeList[0]
+    ;(todayCell as HTMLElement)?.focus()
+  }
 }
 
 function controlCalendarWithArrowKeys(e) {
