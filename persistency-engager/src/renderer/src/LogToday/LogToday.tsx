@@ -16,7 +16,13 @@ function hasContent(content: string): boolean {
   return false
 }
 
-export default function LogToday({ readOnly, selectedDate, selectTodayDate, onLogContentUpdate }) {
+export default function LogToday({
+  readOnly,
+  selectedDate,
+  content,
+  selectTodayDate,
+  onLogContentUpdate
+}) {
   let [logContentText_, setLogContentText] = useState('')
   let [newContentState, setNewContentState] = useState(logContentText_)
 
@@ -27,11 +33,8 @@ export default function LogToday({ readOnly, selectedDate, selectTodayDate, onLo
   }
 
   useEffect(() => {
-    window.api.getLogForDate(selectedDate).then((logContent) => {
-      if (logContent) setLogContentText(logContent.Content)
-      else setLogContentText('')
-    })
-  }, [selectedDate])
+    setLogContentText(content)
+  }, [content])
 
   function handleSubmit() {
     if (readOnly) {
@@ -64,7 +67,7 @@ export default function LogToday({ readOnly, selectedDate, selectTodayDate, onLo
       <h3>{selectedDate}</h3>
       <div className="logTodayForm">
         <TipTapEditor
-          key={selectedDate}
+          // key={selectedDate}
           _content={logContentText_}
           setLogContentState={setNewContentStateMeta}
           readOnly={readOnly}
