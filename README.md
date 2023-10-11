@@ -1,2 +1,2 @@
 # Persistency Engager
-![Screenshot](.docs/PersistencyEngager.png)
+![Screenshot](docs/PersistencyEngager.png)
