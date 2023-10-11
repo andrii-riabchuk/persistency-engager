@@ -1,11 +1,2 @@
-# WorkingStack
-React app wrapped with Electron
-
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
-
-<!-- code_chunk_output -->
-
-- [WorkingStack](#workingstack)
-
-<!-- /code_chunk_output -->
-
+# Persistency Engager
+![Screenshot](.docs/PersistencyEngager.png)
