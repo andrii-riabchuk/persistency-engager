@@ -35,7 +35,7 @@ function App() {
       <h1>
         {activityName + '      '}
         <div style={{ float: 'right' }}>
-          <<Settings activityName={activityName} setActivityName={setActivityName} />
+          <Settings activityName={activityName} setActivityName={setActivityName} />
         </div>
       </h1>
       <ContributionCalendarComponent key={calendarRender} onGraphCellClick={setSelectedDate} />
