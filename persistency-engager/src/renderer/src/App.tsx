@@ -3,11 +3,11 @@ import LogToday from './LogToday/LogToday'
 import { useEffect, useState } from 'react'
 
 import timeUtils from '../../utils/time-utils'
-import { SettingsModal } from './SettingsModal/SettingsModal'
+import { Settings } from './settings/Settings'
 
 function App() {
   let [activityName, setActivityName] = useState('')
-
+  
   let [_, TODAY] = timeUtils.lastYearRangeFormatted()
 
   let [selectedDate, setSelectedDate] = useState(TODAY)
@@ -35,7 +35,7 @@ function App() {
       <h1>
         {activityName + '      '}
         <div style={{ float: 'right' }}>
-          <SettingsModal activityName={activityName} setActivityName={setActivityName} />
+          <<Settings activityName={activityName} setActivityName={setActivityName} />
         </div>
       </h1>
       <ContributionCalendarComponent key={calendarRender} onGraphCellClick={setSelectedDate} />
