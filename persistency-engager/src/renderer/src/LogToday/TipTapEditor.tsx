@@ -53,17 +53,16 @@ const extensions = [
   PlaceHolder
 ]
 
-export default function TipTapEditor({ _content, setLogContentState, readOnly, renameMe }) {
+export default function TipTapEditor({ _content, setLogContentState, readOnly, refForAutoFocus }) {
   let editor = useEditor({
     extensions: extensions,
     content: _content,
     onUpdate({ editor }) {
-      // console.log('updated', editor.getHTML())
       setLogContentState(editor.getHTML())
     },
     editable: !readOnly
   })
-  renameMe.current = editor
+  refForAutoFocus.current = editor
 
   useEffect(() => {
     if (editor) {
@@ -87,7 +86,7 @@ export default function TipTapEditor({ _content, setLogContentState, readOnly, r
       }}
     >
       <MenuBar editor={editor} readOnly={readOnly} />
-      <EditorContent editor={editor} ref={renameMe} />
+      <EditorContent editor={editor} ref={refForAutoFocus} />
     </div>
   )
 }

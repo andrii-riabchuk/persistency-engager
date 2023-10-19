@@ -7,8 +7,8 @@ import { Settings } from './settings/Settings'
 
 function App() {
   let [activityName, setActivityName] = useState('')
-
-  let [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
+  
+  let [_, TODAY] = timeUtils.lastYearRangeFormatted()
 
   let [selectedDate, setSelectedDate] = useState(TODAY)
   let [contributionData, setContributionData] = useState({})
@@ -34,12 +34,13 @@ function App() {
     <div className="contributionCalendar">
       <h1>
         {activityName + '      '}
-        <Settings activityName={activityName} setActivityName={setActivityName} />
+        <div style={{ float: 'right' }}>
+          <<Settings activityName={activityName} setActivityName={setActivityName} />
+        </div>
       </h1>
       <ContributionCalendarComponent key={calendarRender} onGraphCellClick={setSelectedDate} />
 
       <LogToday
-        // key={selectedDate}
         selectedDate={selectedDate}
         readOnly={selectedDate !== TODAY}
         content={contributionData[selectedDate]?.Content ?? ''}
