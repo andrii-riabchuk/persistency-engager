@@ -1,19 +1,33 @@
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
+import Form from 'react-bootstrap/Form'
 import { useState } from 'react'
-import { Button, Form, Modal } from 'react-bootstrap'
 
+// import 'bootstrap/dist/css/bootstrap.min.css'
 import './ModalShit.css'
+import { selectActivityName, setActivityName } from '@renderer/features/settings/settingsSlice'
+import { useAppDispatch, useAppSelector } from '@renderer/app/hooks'
 
-export function SettingsModal({ activityName, setActivityName }) {
+export function Settings() {
   const [show, setShow] = useState(false)
-  let [draftActivityName, setDraftActivityName] = useState(activityName)
+  const activityName = useAppSelector(selectActivityName)
+  const dispatch = useAppDispatch()
+
+  let [draftActivityName, setDraftActivityName] = useState('')
+
+  const handleClose = () => {
+    setShow(false)
+  }
+
+  const handleSave = () => {
+    window.api.setActivityName(draftActivityName)
+    dispatch(setActivityName(draftActivityName))
+    setShow(false)
+  }
 
   const handleShow = () => {
     setShow(true)
     setDraftActivityName(activityName)
-  }
-
-  const handleClose = () => {
-    setShow(false)
   }
 
   function handleEnterPress(target) {
@@ -21,12 +35,6 @@ export function SettingsModal({ activityName, setActivityName }) {
       target.preventDefault()
       handleSave()
     }
-  }
-
-  const handleSave = () => {
-    window.api.setActivityName(draftActivityName)
-    setActivityName(draftActivityName)
-    setShow(false)
   }
 
   return (
