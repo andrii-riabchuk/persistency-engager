@@ -2,8 +2,12 @@ import { useEffect, useState } from 'react'
 import { ContributionCalendar } from 'react-contribution-calendar'
 import timeUtils from '../../../utils/time-utils'
 import './ContributionCalendarComponent.css'
+import { setPickedDate } from '@renderer/features/contribution-calendar/contributionCalendarSlice'
+import { useAppDispatch } from '@renderer/app/hooks'
 
-export default function ContributionCalendarComponent({ onGraphCellClick }) {
+export default function ContributionCalendarComponent() {
+  const dispatch = useAppDispatch()
+
   let [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
 
   let [contributionData, setContributionData] = useState(Array<InputData>)
@@ -20,7 +24,7 @@ export default function ContributionCalendarComponent({ onGraphCellClick }) {
 
   function onCellClick(data) {
     let dateSelected = data!.date
-    onGraphCellClick(dateSelected)
+    dispatch(setPickedDate(dateSelected))
   }
 
   return (

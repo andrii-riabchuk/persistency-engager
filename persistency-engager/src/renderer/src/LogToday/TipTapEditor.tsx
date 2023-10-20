@@ -14,13 +14,16 @@ import PlaceHolder from '@tiptap/extension-placeholder'
 import { EditorContent, createDocument, useEditor } from '@tiptap/react'
 import Document from '@tiptap/extension-document'
 import History from '@tiptap/extension-history'
-import { EditorState } from 'prosemirror-state'
 
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 
-import { useEffect, useState } from 'react'
 import MenuBar from './Menu'
+import {
+  selectLogContentEditable,
+  setLogContentEditable
+} from '@renderer/features/contribution-calendar/contributionCalendarSlice'
+import { useAppDispatch, useAppSelector } from '@renderer/app/hooks'
 
 const extensions = [
   Document,
@@ -53,30 +56,24 @@ const extensions = [
   PlaceHolder
 ]
 
-export default function TipTapEditor({ _content, setLogContentState, readOnly, refForAutoFocus }) {
-  let editor = useEditor({
-    extensions: extensions,
-    content: _content,
-    onUpdate({ editor }) {
-      setLogContentState(editor.getHTML())
+export default function TipTapEditor({ logContent, readOnly, refForAutoFocus }) {
+  const dispatch = useAppDispatch()
+  let logContentEditable = useAppSelector(selectLogContentEditable)
+
+  console.log('TipTapEditor', logContentEditable)
+  let editor = useEditor(
+    {
+      extensions: extensions,
+      content: logContent,
+      onUpdate({ editor }) {
+        dispatch(setLogContentEditable(editor.getHTML()))
+        console.log('tiptap onUpdate', editor.getHTML())
+      },
+      editable: !readOnly
     },
-    editable: !readOnly
-  })
+    [logContent]
+  )
   refForAutoFocus.current = editor
-
-  useEffect(() => {
-    if (editor) {
-      const newState = EditorState.create({
-        doc: createDocument(_content, editor.schema),
-        schema: editor.schema,
-        plugins: editor.state.plugins
-      })
-      editor.view.updateState(newState)
-
-      editor.commands.setContent(_content)
-      editor.setEditable(!readOnly)
-    }
-  }, [_content, readOnly])
 
   return (
     <div
