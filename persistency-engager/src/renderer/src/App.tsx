@@ -2,53 +2,57 @@ import ContributionCalendarComponent from './ContributionCalendarComponent/Contr
 import LogToday from './LogToday/LogToday'
 import { useEffect, useState } from 'react'
 
-import timeUtils from '../../utils/time-utils'
-import { Settings } from './settings/Settings'
+import { selectActivityName, setActivityName } from '@renderer/features/settings/settingsSlice'
+import {
+  setContributionData,
+  setTodayDate
+} from '@renderer/features/contribution-calendar/contributionCalendarSlice'
+
+import { useAppSelector, useAppDispatch } from '@renderer/app/hooks'
+import { Settings } from './features/settings/Settings'
 
 function App() {
-  let [activityName, setActivityName] = useState('')
-  
-  let [_, TODAY] = timeUtils.lastYearRangeFormatted()
-
-  let [selectedDate, setSelectedDate] = useState(TODAY)
-  let [contributionData, setContributionData] = useState({})
+  const activityName = useAppSelector(selectActivityName)
+  const dispatch = useAppDispatch()
 
   let [calendarRender, setCalendarRender] = useState(0)
   let rerenderCalendar = () => setCalendarRender(calendarRender + 1)
 
   useEffect(() => {
-    window.api.getData().then((logEntries: any[]) => {
-      let hashMap = {}
-      logEntries.forEach((row) => {
-        hashMap[row.DateTime] = row
-      })
-      setContributionData(hashMap)
+    loadData((data) => {
+      dispatch(setContributionData(data))
     })
   }, [calendarRender])
 
   useEffect(() => {
-    window.api.getActivityName().then(setActivityName)
+    window.api.getActivityName().then((name) => {
+      dispatch(setActivityName(name))
+    })
+    dispatch(setTodayDate())
   }, [])
 
   return (
     <div className="contributionCalendar">
       <h1>
-        {activityName + '      '}
+        {activityName}
         <div style={{ float: 'right' }}>
-          <Settings activityName={activityName} setActivityName={setActivityName} />
+          <Settings />
         </div>
       </h1>
-      <ContributionCalendarComponent key={calendarRender} onGraphCellClick={setSelectedDate} />
-
-      <LogToday
-        selectedDate={selectedDate}
-        readOnly={selectedDate !== TODAY}
-        content={contributionData[selectedDate]?.Content ?? ''}
-        onLogContentUpdate={rerenderCalendar}
-        selectTodayDate={() => setSelectedDate(TODAY)}
-      />
+      <ContributionCalendarComponent key={calendarRender} />
+      <LogToday onLogContentUpdate={rerenderCalendar} />
     </div>
   )
+}
+
+function loadData(callBack: (data: object) => void) {
+  window.api.getData().then((logEntries: any[]) => {
+    let hashMap = {}
+    logEntries.forEach((row) => {
+      hashMap[row.DateTime] = row
+    })
+    callBack(hashMap)
+  })
 }
 
 export default App

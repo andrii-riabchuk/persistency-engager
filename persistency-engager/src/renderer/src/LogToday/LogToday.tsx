@@ -3,33 +3,45 @@ import TipTapEditor from './TipTapEditor'
 import LogTodayButton from '@renderer/assets/LogTodayButton'
 import { Editor } from '@tiptap/react'
 import { tryLogToday } from './logTodayService'
+import {
+  selectLogContentEditable,
+  selectLogContentForDate,
+  selectPickedDate,
+  setLogContentEditable,
+  setTodayDate
+} from '@renderer/features/contribution-calendar/contributionCalendarSlice'
+import { useAppDispatch, useAppSelector } from '@renderer/app/hooks'
+import timeUtils from '../../../utils/time-utils'
 
-export default function LogToday({
-  readOnly,
-  selectedDate,
-  content,
-  selectTodayDate,
-  onLogContentUpdate
-}) {
-  let [logContentText_, setLogContentText] = useState('')
-  let [newContentState, setNewContentState] = useState(logContentText_)
+export default function LogToday({ onLogContentUpdate }) {
+  const dispatch = useAppDispatch()
+  let [_, TODAY] = timeUtils.lastYearRangeFormatted()
+
+  let selectedDate = useAppSelector(selectPickedDate)
+  let content = useAppSelector((state) => selectLogContentForDate(state, selectedDate))
+  let readOnly = selectedDate != TODAY
+
+  let logContentEditable = useAppSelector(selectLogContentEditable)
+  console.log(`logToday component with logContentText_${logContentEditable}`)
+  // let [newContentState, setNewContentState] = useState(logContentText_)
 
   let logInputControl = useRef<Editor>(null)
 
-  let setNewContentStateMeta = (obj) => {
-    setNewContentState(obj)
-  }
+  // let setNewContentStateMeta = (obj) => {
+  //   setNewContentState(obj)
+  // }
 
   useEffect(() => {
-    setLogContentText(content)
+    console.log('useEffect setLogContentText')
+    dispatch(setLogContentEditable(content))
   }, [content])
 
   function handleSubmit() {
     if (readOnly) {
       if (logInputControl.current) logInputControl.current.view.dom.focus()
-      selectTodayDate()
+      dispatch(setTodayDate())
     } else {
-      if (tryLogToday(newContentState)) onLogContentUpdate()
+      if (tryLogToday(logContentEditable)) onLogContentUpdate()
     }
   }
 
@@ -38,8 +50,7 @@ export default function LogToday({
       <h3>{selectedDate}</h3>
       <div className="logTodayForm">
         <TipTapEditor
-          _content={logContentText_}
-          setLogContentState={setNewContentStateMeta}
+          logContent={content}
           readOnly={readOnly}
           refForAutoFocus={logInputControl}
         ></TipTapEditor>
