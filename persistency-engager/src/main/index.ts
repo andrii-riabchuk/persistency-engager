@@ -1,11 +1,13 @@
 import { app, shell, BrowserWindow, Tray, Menu, ipcMain, dialog, nativeImage } from 'electron'
-import { join } from 'path'
+import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
 import { databaseHealthCheck } from './database/check-up'
 import registerEventHandlers from './context-bridge/register-event-handlers'
 import { TRAY_ICON } from './services/trayicon'
 import { scheduleReminder } from './services/notificationService'
+
+const { session } = require('electron')
 
 function createWindow(): BrowserWindow {
   const mainWindow = new BrowserWindow({
@@ -55,7 +57,7 @@ function createTray() {
   tray.setContextMenu(menu)
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   electronApp.setAppUserModelId('com.electron')
 
   // Default open or close DevTools by F12 in development
@@ -64,6 +66,11 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
+  await session.defaultSession.loadExtension(
+    path.join(
+      'C:\\Users\\andri\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1\\Extensions\\lmhkpmbekcpmknklioeibfkpmmfibljd\\3.1.3_0'
+    )
+  )
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
