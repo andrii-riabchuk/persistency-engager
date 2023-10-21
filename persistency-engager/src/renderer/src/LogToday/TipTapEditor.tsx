@@ -64,11 +64,11 @@ export default function TipTapEditor({ logContent, readOnly, refForAutoFocus }) 
   let editor = useEditor(
     {
       extensions: extensions,
-      content: logContent ?? '',
-      // onUpdate({ editor }) {
-      //   dispatch(setLogContentEditable(editor.getHTML()))
-      //   console.log('tiptap onUpdate', editor.getHTML())
-      // },
+      content: logContent,
+      onUpdate({ editor }) {
+        dispatch(setLogContentEditable(editor.getHTML()))
+        console.log('tiptap onUpdate', editor.getHTML())
+      },
       editable: !readOnly
     },
     [logContent, readOnly]

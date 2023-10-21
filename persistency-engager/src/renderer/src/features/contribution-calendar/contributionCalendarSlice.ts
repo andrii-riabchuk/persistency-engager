@@ -44,7 +44,7 @@ export const selectLogContentEditable = (state: RootState) =>
 
 export const selectLogContentForDate = (state: RootState, date: string) => {
   let data = state.contributionCalendar.contributionData
-  return data[date]?.Content ?? ''
+  return data[date]?.Content
 }
 
 export const selectContributionData = (state: RootState) =>
