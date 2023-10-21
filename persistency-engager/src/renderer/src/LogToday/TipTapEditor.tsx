@@ -60,7 +60,7 @@ export default function TipTapEditor({ logContent, readOnly, refForAutoFocus }) 
   const dispatch = useAppDispatch()
   let logContentEditable = useAppSelector(selectLogContentEditable)
 
-  console.log('TipTapEditor', logContentEditable)
+  console.log(`TipTapEditor -[${logContent}]; editable[${!readOnly}]`)
   let editor = useEditor(
     {
       extensions: extensions,
@@ -71,7 +71,7 @@ export default function TipTapEditor({ logContent, readOnly, refForAutoFocus }) 
       },
       editable: !readOnly
     },
-    [logContent]
+    [logContent, readOnly]
   )
   refForAutoFocus.current = editor
 
