@@ -8,7 +8,6 @@ declare global {
       getActivityName: () => Promise<any>
       setActivityName: (newName: string) => void
       getData: () => Promise<any>
-      getLogForDate: (selectedDate: string) => Promise<any>
       updateLogEntry: (input: any) => void
     }
   }

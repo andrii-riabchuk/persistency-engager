@@ -2,24 +2,26 @@ import { useEffect, useState } from 'react'
 import { ContributionCalendar } from 'react-contribution-calendar'
 import timeUtils from '../../../utils/time-utils'
 import './ContributionCalendarComponent.css'
-import { setPickedDate } from '@renderer/features/contribution-calendar/contributionCalendarSlice'
-import { useAppDispatch } from '@renderer/app/hooks'
+import {
+  selectContributionData,
+  selectLogContentForDate,
+  setPickedDate
+} from '@renderer/features/contribution-calendar/contributionCalendarSlice'
+import { useAppDispatch, useAppSelector } from '@renderer/app/hooks'
 
-export default function ContributionCalendarComponent() {
+export default function ContributionCalendarComponent({ activityName }) {
   const dispatch = useAppDispatch()
 
   let [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
 
-  let [contributionData, setContributionData] = useState(Array<InputData>)
+  let contributionData = useAppSelector((state) => selectContributionData(state, activityName))
+  console.log(contributionData)
+  let preparedData = contributionData.map((row) => {
+    return { [row.DateTime]: { level: row.Level } }
+  })
 
   useEffect(() => {
-    window.api.getData().then((logEntries: any[]) => {
-      var prepared = logEntries.map((row) => {
-        return { [row.DateTime]: { level: row.Level } }
-      })
-      setContributionData(prepared)
-      focusTodayCell()
-    })
+    // focusTodayCell()
   }, [])
 
   function onCellClick(data) {
@@ -31,7 +33,7 @@ export default function ContributionCalendarComponent() {
     <>
       <div className="activity-graph" onKeyDown={controlCalendarWithArrowKeys}>
         <ContributionCalendar
-          data={contributionData}
+          data={preparedData}
           start={YEAR_AGO}
           end={TODAY}
           daysOfTheWeek={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}

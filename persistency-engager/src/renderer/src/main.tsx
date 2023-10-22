@@ -11,21 +11,19 @@ import Activities from './features/activities/Activities'
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: (
-      <Provider store={store}>
-        <App />
-      </Provider>
-    )
+    path: '/app',
+    element: <App />
   },
   {
-    path: '/activities',
+    path: '/',
     element: <Activities />
   }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 )

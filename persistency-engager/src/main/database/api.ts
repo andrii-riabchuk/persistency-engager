@@ -16,8 +16,8 @@ function loadDB(): Database {
   return new Database(getDbPath())
 }
 
-function getActivities(db: Database): object {
-  return db.prepare(queries.GET_ACTIVITIES).get()
+function getActivities(db: Database): object[] {
+  return db.prepare(queries.GET_ACTIVITIES).all()
 }
 
 function getLogEntryByDate(db: Database, date: string) {

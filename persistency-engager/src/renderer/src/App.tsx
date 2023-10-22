@@ -25,33 +25,28 @@ function App() {
   }, [calendarRender])
 
   useEffect(() => {
-    window.api.getActivityName().then((name) => {
-      dispatch(setActivityName(name))
-    })
+    dispatch(setActivityName('@Coding@'))
     dispatch(setTodayDate())
   }, [])
 
   return (
     <div className="contributionCalendar">
+      <a href="/">Activities</a>
       <h1>
         {activityName}
         <div style={{ float: 'right' }}>
           <Settings />
         </div>
       </h1>
-      <ContributionCalendarComponent key={calendarRender} />
+      <ContributionCalendarComponent key={calendarRender} activityName={activityName} />
       <LogToday onLogContentUpdate={rerenderCalendar} />
     </div>
   )
 }
 
-function loadData(callBack: (data: object) => void) {
-  window.api.getData().then((logEntries: any[]) => {
-    let hashMap = {}
-    logEntries.forEach((row) => {
-      hashMap[row.DateTime] = row
-    })
-    callBack(hashMap)
+export function loadData(callBack: (data: object) => void) {
+  window.api.getData().then((logEntriesGrouped: any[]) => {
+    callBack(logEntriesGrouped)
   })
 }
 

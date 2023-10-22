@@ -2,7 +2,9 @@
   "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
   "include": ["electron.vite.config.*", "src/main/**/*", "src/preload/*", "src/utils"],
   "compilerOptions": {
+    "target": "ESNext",
     "composite": true,
-    "types": ["electron-vite/node"]
+    "types": ["electron-vite/node"],
+    "lib": ["ES2017.Object"]
   }
 }
