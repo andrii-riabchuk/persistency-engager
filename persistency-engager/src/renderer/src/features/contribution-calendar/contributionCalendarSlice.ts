@@ -47,7 +47,19 @@ export const selectLogContentForDate = (state: RootState, date: string) => {
   return data[date]?.Content
 }
 
-export const selectContributionData = (state: RootState) =>
-  state.contributionCalendar.contributionData
+export const selectActivityNames = (state: RootState) => {
+  if (
+    state.contributionCalendar.contributionData &&
+    state.contributionCalendar.contributionData['activityTypes']
+  )
+    return state.contributionCalendar.contributionData['activityTypes'].map((x) => x.name)
+  return []
+}
 
+export const selectContributionData = (state: RootState, activityName: string) => {
+  console.log('slice', activityName)
+  let data = state.contributionCalendar.contributionData
+  if (data && data[activityName]) return data[activityName]
+  return []
+}
 export default contributionCalendarSlice.reducer

@@ -16,12 +16,8 @@ export default function registerEventHandlers() {
     return logEntryService.updateActivityName(newName)
   })
 
-  ipcMain.handle('getData', (event) => {
-    return logEntryService.getLastYearLogEntries()
-  })
-
-  ipcMain.handle('getLogForDate', (event, selectedDate) => {
-    return logEntryService.getLogEntry(selectedDate)
+  ipcMain.handle('getData', (event, forActivity) => {
+    return logEntryService.getLastYearLogEntries(forActivity)
   })
 
   ipcMain.handle('setData', (event, input) => {

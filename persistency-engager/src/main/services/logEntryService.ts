@@ -3,20 +3,24 @@ import { LogTodayEntry } from '../database/api'
 import queries from '../database/queries'
 import timeUtils from '../../utils/time-utils'
 
-interface Cache {
-  [key: string]: any[]
+export interface ActivityType {
+  id: number
+  name: string
 }
-
 export class LogEntryService {
-  _logEntriesCache: Cache = {}
+  getActivities(): ActivityType[] {
+    let db = dbApi.loadDB()
+    let activities = dbApi.getActivities(db).map((x) => ({ id: x['Id'], name: x['Name'] }))
+
+    return activities
+  }
 
   getActivityName(): string {
-    console.log('LogEntryService: getting ActivityName')
     let db = dbApi.loadDB()
-    let mainActivity = dbApi.getActivities(db)
+    let activities = dbApi.getActivities(db)
     db.close()
 
-    return mainActivity['Name']
+    return activities[0]['Name']
   }
 
   updateActivityName(newName: any): any {
@@ -26,25 +30,12 @@ export class LogEntryService {
     db.close()
   }
 
-  getLogEntry(selectedDate: string) {
-    let key = Object.keys(this._logEntriesCache)[0]
-    let logEntries = this._logEntriesCache[key]
-
-    let selectedDayLog = logEntries.find((x) => x.DateTime == selectedDate)
-    return selectedDayLog
-    //     setSelectedDateContent({ ...selectedDateContent, content: selectedDayLog_?.Content })
-  }
-
-  getLastYearLogEntries(reloadCache: boolean = false) {
+  getLastYearLogEntries() {
     let lastYearRange: [string, string] = timeUtils.lastYearRangeFormatted()
-    // "'2023-09-11','2023-09-13"
-    let key = lastYearRange.toString()
 
-    // if (!this._logEntriesCache[key] || reloadCache)
-    this._logEntriesCache[key] = this.getLogEntriesForDateRange(...lastYearRange)
+    let res = this.getLogEntriesForDateRange(...lastYearRange)
 
-    console.log('retrieved from cache')
-    return this._logEntriesCache[key]
+    return res
   }
 
   getLogEntriesForDateRange(from: string, to: string) {
@@ -52,8 +43,22 @@ export class LogEntryService {
     let logEntries: any[] = db.prepare(queries.GET_LOG_ENTRIES_FOR_DATE_RANGE).all(from, to)
     db.close()
 
-    console.log(`${logEntries.length} entries selected`)
-    return logEntries
+    let activityTypes = new Set(logEntries.map((x) => x['ActivityTypeId']))
+    let activityName = this.getActivities().reduce((res, cur) => {
+      res[cur.id] = cur.name
+      return res
+    }, {})
+
+    // console.log(logEntries)
+    let grouped = logEntries.reduce((res, cur) => {
+      let groupName = activityName[cur.ActivityTypeId]
+      ;(res[groupName] = res[groupName] || []).push(cur)
+      return res
+    }, {})
+
+    grouped['activityTypes'] = this.getActivities()
+
+    return grouped
   }
 
   addOrUpdateLog(input: LogTodayEntry) {
@@ -62,9 +67,6 @@ export class LogEntryService {
 
     let db = dbApi.loadDB()
     dbApi.insertOrUpdateLogEntry(db, TODAY_DATE, content, level, activityType)
-
-    // reload for cache
-    this.getLastYearLogEntries(true)
 
     db.close()
   }

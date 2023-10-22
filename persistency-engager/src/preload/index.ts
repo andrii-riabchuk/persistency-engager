@@ -7,7 +7,6 @@ const api = {
   getActivityName: () => ipcRenderer.invoke('getActivityName'),
   setActivityName: (newName: string) => ipcRenderer.invoke('setActivityName', newName),
   getData: () => ipcRenderer.invoke('getData'),
-  getLogForDate: (selectedDate: string) => ipcRenderer.invoke('getLogForDate', selectedDate),
   updateLogEntry: (input) => ipcRenderer.invoke('setData', input)
 }
 
