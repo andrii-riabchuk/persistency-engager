@@ -1,3 +1,7 @@
 td.calendar-cell.top.half-arrow:focus {
     box-shadow: 0 0 0 1px black;
 }
+
+div.container div.description {
+    display: none;
+}
