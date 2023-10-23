@@ -3,12 +3,14 @@ import { RootState, AppThunk } from '../../app/store'
 import timeUtils from '../../../../utils/time-utils'
 
 export interface ContributionCalendarState {
+  currentActivity: string
   pickedDate: string
   contributionData: object
   logContentEditable: string
 }
 
 const initialState: ContributionCalendarState = {
+  currentActivity: '',
   pickedDate: '',
   contributionData: {},
   logContentEditable: ''
@@ -19,6 +21,9 @@ export const contributionCalendarSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
+    setCurrentActivity: (state, action: PayloadAction<string>) => {
+      state.currentActivity = action.payload
+    },
     setTodayDate: (state) => {
       let [_, TODAY] = timeUtils.lastYearRangeFormatted()
       state.pickedDate = TODAY
@@ -35,9 +40,17 @@ export const contributionCalendarSlice = createSlice({
   }
 })
 
-export const { setPickedDate, setTodayDate, setLogContentEditable, setContributionData } =
-  contributionCalendarSlice.actions
+export const {
+  setCurrentActivity,
+  setPickedDate,
+  setTodayDate,
+  setLogContentEditable,
+  setContributionData
+} = contributionCalendarSlice.actions
 
+export const selectCurrentActivity = (state: RootState) =>
+  state.contributionCalendar.currentActivity
+  
 export const selectPickedDate = (state: RootState) => state.contributionCalendar.pickedDate
 export const selectLogContentEditable = (state: RootState) =>
   state.contributionCalendar.logContentEditable

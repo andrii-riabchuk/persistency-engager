@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import counterReducer from '../features/settings/settingsSlice'
 import contributionCalendarReducer from '@renderer/features/contribution-calendar/contributionCalendarSlice'
+import routerReducer from '../features/route/routerSlice'
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
-    contributionCalendar: contributionCalendarReducer
+    contributionCalendar: contributionCalendarReducer,
+    router: routerReducer
   }
 })
 

@@ -1,0 +1,15 @@
+.card {
+    padding: 5px 0px 0px 5px;
+}
+
+.card:hover {
+  box-shadow: 0 0 11px rgba(33,33,33,.125);
+}
+
+ul {
+    list-style-type: none;
+}
+
+li:not(:last-child) {
+    margin-bottom: 20px;
+}
