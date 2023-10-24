@@ -19,6 +19,24 @@ export default function Activities() {
 
   useEffect(() => {
     loadData((data) => {
+      console.log('useeffect_Activities', data)
+      function formatAppropriately(arr: any[]) {
+        let result = arr.reduce((res, cur) => {
+          res[cur.DateTime] = cur
+          return res
+        }, {})
+
+        return result
+      }
+
+      for (let i = 0; i < data.activityTypes.length; i++) {
+        let activityType = data.activityTypes[i]['name']
+        data[activityType] = formatAppropriately(data[activityType])
+      }
+
+      // let preparedData = data.reduce((res, cur) => {
+      //   res[cur.DateTime] = cur
+      // }, {})
       dispatch(setContributionData(data))
     })
   }, [])

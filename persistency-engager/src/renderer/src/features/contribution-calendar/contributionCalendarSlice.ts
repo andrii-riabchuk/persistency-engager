@@ -6,6 +6,7 @@ export interface ContributionCalendarState {
   currentActivity: string
   pickedDate: string
   contributionData: object
+  contributionDataForCalendar: object[]
   logContentEditable: string
 }
 
@@ -13,6 +14,7 @@ const initialState: ContributionCalendarState = {
   currentActivity: '',
   pickedDate: '',
   contributionData: {},
+  contributionDataForCalendar: [],
   logContentEditable: ''
 }
 
@@ -36,6 +38,9 @@ export const contributionCalendarSlice = createSlice({
     },
     setContributionData: (state, action: PayloadAction<object>) => {
       state.contributionData = action.payload
+    },
+    setContributionDataForCalendar: (state, action: PayloadAction<object[]>) => {
+      state.contributionDataForCalendar = action.payload
     }
   }
 })
@@ -50,14 +55,19 @@ export const {
 
 export const selectCurrentActivity = (state: RootState) =>
   state.contributionCalendar.currentActivity
-  
+
 export const selectPickedDate = (state: RootState) => state.contributionCalendar.pickedDate
 export const selectLogContentEditable = (state: RootState) =>
   state.contributionCalendar.logContentEditable
 
 export const selectLogContentForDate = (state: RootState, date: string) => {
-  let data = state.contributionCalendar.contributionData
-  return data[date]?.Content
+  let activityName = state.contributionCalendar.currentActivity
+  if (activityName) {
+    let data = state.contributionCalendar.contributionData[activityName]
+    console.log('selectLogContentForDate', data, date)
+    return data[date]?.Content
+  }
+  return undefined
 }
 
 export const selectActivityNames = (state: RootState) => {
@@ -74,5 +84,9 @@ export const selectContributionData = (state: RootState, activityName: string) =
   let data = state.contributionCalendar.contributionData
   if (data && data[activityName]) return data[activityName]
   return []
+}
+
+export const selectContributionDataForCalendar = (state: RootState, activityName: string) => {
+  return state.contributionCalendar.contributionDataForCalendar[activityName]
 }
 export default contributionCalendarSlice.reducer

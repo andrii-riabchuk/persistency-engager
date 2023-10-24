@@ -25,9 +25,12 @@ function ActivityLog() {
   let rerenderCalendar = () => setCalendarRender(calendarRender + 1)
 
   useEffect(() => {
-    loadData((data) => {
-      dispatch(setContributionData(data))
-    })
+    // loadData((data) => {
+    //   let preparedData = data.reduce((res, cur) => {
+    //     res[cur.DateTime] = cur
+    //   }, {})
+    //   dispatch(setContributionData(preparedData))
+    // })
   }, [calendarRender])
 
   useEffect(() => {
@@ -56,7 +59,7 @@ function ActivityLog() {
   )
 }
 
-export function loadData(callBack: (data: object) => void) {
+export function loadData(callBack: (data: any[]) => void) {
   window.api.getData().then((logEntriesGrouped: any[]) => {
     callBack(logEntriesGrouped)
   })
