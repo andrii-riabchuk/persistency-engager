@@ -6,7 +6,7 @@ export interface ContributionCalendarState {
   currentActivity: string
   pickedDate: string
   contributionData: object
-  contributionDataForCalendar: object[]
+  contributionDataForCalendar: object
   logContentEditable: string
 }
 
@@ -39,7 +39,7 @@ export const contributionCalendarSlice = createSlice({
     setContributionData: (state, action: PayloadAction<object>) => {
       state.contributionData = action.payload
     },
-    setContributionDataForCalendar: (state, action: PayloadAction<object[]>) => {
+    setContributionDataForCalendar: (state, action: PayloadAction<object>) => {
       state.contributionDataForCalendar = action.payload
     }
   }
@@ -50,7 +50,8 @@ export const {
   setPickedDate,
   setTodayDate,
   setLogContentEditable,
-  setContributionData
+  setContributionData,
+  setContributionDataForCalendar
 } = contributionCalendarSlice.actions
 
 export const selectCurrentActivity = (state: RootState) =>
