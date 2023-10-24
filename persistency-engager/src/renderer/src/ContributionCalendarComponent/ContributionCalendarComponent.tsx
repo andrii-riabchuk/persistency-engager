@@ -16,12 +16,12 @@ export default function ContributionCalendarComponent({ activityName }) {
 
   let contributionData = useAppSelector((state) => selectContributionData(state, activityName))
   console.log(contributionData)
-  let preparedData = contributionData.map((row) => {
-    return { [row.DateTime]: { level: row.Level } }
-  })
+  // let preparedData = contributionData.map((row) => {
+  //   return { [row.DateTime]: { level: row.Level } }
+  // })
 
   useEffect(() => {
-    // focusTodayCell()
+    focusTodayCell()
   }, [])
 
   function onCellClick(data) {
@@ -33,7 +33,7 @@ export default function ContributionCalendarComponent({ activityName }) {
     <>
       <div className="activity-graph" onKeyDown={controlCalendarWithArrowKeys}>
         <ContributionCalendar
-          data={preparedData}
+          data={contributionData}
           start={YEAR_AGO}
           end={TODAY}
           daysOfTheWeek={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}

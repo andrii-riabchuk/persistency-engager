@@ -32,7 +32,7 @@ export default function LogToday({ onLogContentUpdate }) {
   // }
 
   useEffect(() => {
-    console.log('useEffect setLogContentText')
+    console.log('useEffect setLogContentText', content)
     dispatch(setLogContentEditable(content))
   }, [content])
 
