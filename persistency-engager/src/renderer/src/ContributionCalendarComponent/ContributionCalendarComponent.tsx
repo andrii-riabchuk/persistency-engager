@@ -4,6 +4,7 @@ import timeUtils from '../../../utils/time-utils'
 import './ContributionCalendarComponent.css'
 import {
   selectContributionData,
+  selectContributionDataForCalendar,
   selectLogContentForDate,
   setPickedDate
 } from '@renderer/features/contribution-calendar/contributionCalendarSlice'
@@ -14,7 +15,9 @@ export default function ContributionCalendarComponent({ activityName }) {
 
   let [YEAR_AGO, TODAY] = timeUtils.lastYearRangeFormatted()
 
-  let contributionData = useAppSelector((state) => selectContributionData(state, activityName))
+  let contributionData = useAppSelector((state) =>
+    selectContributionDataForCalendar(state, activityName)
+  )
   console.log(contributionData)
   // let preparedData = contributionData.map((row) => {
   //   return { [row.DateTime]: { level: row.Level } }

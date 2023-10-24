@@ -4,7 +4,9 @@ import React, { useEffect, useState } from 'react'
 import {
   selectActivityNames,
   selectContributionData,
+  selectContributionDataForCalendar,
   setContributionData,
+  setContributionDataForCalendar,
   setCurrentActivity
 } from '../contribution-calendar/contributionCalendarSlice'
 import ContributionCalendarComponent from '@renderer/ContributionCalendarComponent/ContributionCalendarComponent'
@@ -19,7 +21,9 @@ export default function Activities() {
 
   useEffect(() => {
     loadData((data) => {
-      console.log('useeffect_Activities', data)
+      let dataForCalendar = { activityTypes: data.activityTypes }
+      let dataForLogs = { activityTypes: data.activityTypes }
+
       function formatAppropriately(arr: any[]) {
         let result = arr.reduce((res, cur) => {
           res[cur.DateTime] = cur
@@ -31,13 +35,17 @@ export default function Activities() {
 
       for (let i = 0; i < data.activityTypes.length; i++) {
         let activityType = data.activityTypes[i]['name']
-        data[activityType] = formatAppropriately(data[activityType])
+        dataForLogs[activityType] = formatAppropriately(data[activityType])
+        dataForCalendar[activityType] = data[activityType].map((row) => {
+          return { [row.DateTime]: { level: row.Level } }
+        })
       }
 
       // let preparedData = data.reduce((res, cur) => {
       //   res[cur.DateTime] = cur
       // }, {})
-      dispatch(setContributionData(data))
+      dispatch(setContributionDataForCalendar(dataForCalendar))
+      dispatch(setContributionData(dataForLogs))
     })
   }, [])
 
