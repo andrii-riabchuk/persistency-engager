@@ -9,7 +9,8 @@ export default function App() {
   const dispatch = useAppDispatch()
 
   const activity = useAppSelector(selectCurrentActivity)
-  const route = useAppSelector(selectRoute)
+  let route = useAppSelector(selectRoute)
+  if (route == '') route = '/activities'
 
   return route == '/activities' ? <Activities /> : <ActivityLog />
 }
