@@ -1,10 +1,8 @@
 import { loadData } from '@renderer/ActivityLog'
 import { useAppDispatch, useAppSelector } from '@renderer/app/hooks'
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
   selectActivityNames,
-  selectContributionData,
-  selectContributionDataForCalendar,
   setContributionData,
   setContributionDataForCalendar,
   setCurrentActivity

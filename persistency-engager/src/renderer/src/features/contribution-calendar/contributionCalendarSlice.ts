@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState, AppThunk } from '../../app/store'
+import { RootState } from '../../app/store'
 import timeUtils from '../../../../utils/time-utils'
 
 export interface ContributionCalendarState {

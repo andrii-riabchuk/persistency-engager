@@ -2,23 +2,19 @@ import ContributionCalendarComponent from './ContributionCalendarComponent/Contr
 import LogToday from './LogToday/LogToday'
 import { useEffect, useState } from 'react'
 
-import { selectActivityName, setActivityName } from '@renderer/features/settings/settingsSlice'
+import { setActivityName } from '@renderer/features/settings/settingsSlice'
 import {
   selectCurrentActivity,
-  setContributionData,
   setTodayDate
 } from '@renderer/features/contribution-calendar/contributionCalendarSlice'
 
 import { useAppSelector, useAppDispatch } from '@renderer/app/hooks'
 import { Settings } from './features/settings/Settings'
-import { selectRoute, setRoute } from './features/route/routerSlice'
+import { setRoute } from './features/route/routerSlice'
 
 function ActivityLog() {
   const dispatch = useAppDispatch()
 
-  const route = useAppSelector(selectRoute)
-
-  const activityName = useAppSelector(selectActivityName)
   const activity = useAppSelector(selectCurrentActivity)
 
   let [calendarRender, setCalendarRender] = useState(0)
