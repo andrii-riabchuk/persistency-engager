@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { ContributionCalendar } from 'react-contribution-calendar'
 import timeUtils from '../../../utils/time-utils'
 import './ContributionCalendarComponent.css'
 import {
-  selectContributionData,
   selectContributionDataForCalendar,
-  selectLogContentForDate,
   setPickedDate
 } from '@renderer/features/contribution-calendar/contributionCalendarSlice'
 import { useAppDispatch, useAppSelector } from '@renderer/app/hooks'
@@ -18,10 +16,6 @@ export default function ContributionCalendarComponent({ activityName }) {
   let contributionData = useAppSelector((state) =>
     selectContributionDataForCalendar(state, activityName)
   )
-  console.log(contributionData)
-  // let preparedData = contributionData.map((row) => {
-  //   return { [row.DateTime]: { level: row.Level } }
-  // })
 
   useEffect(() => {
     focusTodayCell()
