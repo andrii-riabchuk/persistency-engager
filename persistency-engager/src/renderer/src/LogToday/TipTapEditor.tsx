@@ -56,12 +56,13 @@ const extensions = [
   PlaceHolder
 ]
 
-export default function TipTapEditor({ logContent, readOnly, refForAutoFocus }) {
+export default function TipTapEditor({ logContent, readOnly, refForAutoFocus, onSubmit }) {
   const dispatch = useAppDispatch()
-  let logContentEditable = useAppSelector(selectLogContentEditable)
+  const logContentEditable = useAppSelector(selectLogContentEditable)
 
-  console.log(`TipTapEditor -[${logContent}]; editable[${!readOnly}]`)
-  let editor = useEditor(
+  // console.log(`TipTapEditor -[${logContent}]; editable[${!readOnly}]`)
+  console.log('Tip tap editor, onsubmit', onSubmit)
+  const editor = useEditor(
     {
       extensions: extensions,
       content: logContent,
@@ -81,9 +82,28 @@ export default function TipTapEditor({ logContent, readOnly, refForAutoFocus }) 
       onClick={() => {
         if (!editor?.isFocused) editor?.commands.focus('end')
       }}
+      onKeyDown={(event) => {
+        if (event.ctrlKey && event.key == 'Enter') {
+          simulateButtonClickVisual()
+          onSubmit()
+        }
+      }}
     >
       <MenuBar editor={editor} readOnly={readOnly} />
       <EditorContent editor={editor} ref={refForAutoFocus} />
     </div>
   )
+}
+
+function simulateButtonClickVisual() {
+  const logButtonElement = document.getElementById('log-button')
+  function setOpacity(value) {
+    if (logButtonElement && logButtonElement.style) logButtonElement.style.opacity = value
+  }
+
+  const currentVal = logButtonElement.style.opacity
+  setTimeout(() => {
+    setOpacity(currentVal)
+  }, 100)
+  setOpacity(1)
 }
