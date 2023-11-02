@@ -15,17 +15,17 @@ import timeUtils from '../../../utils/time-utils'
 
 export default function LogToday({ onLogContentUpdate }) {
   const dispatch = useAppDispatch()
-  let [_, TODAY] = timeUtils.lastYearRangeFormatted()
+  const [_, TODAY] = timeUtils.lastYearRangeFormatted()
 
-  let selectedDate = useAppSelector(selectPickedDate)
-  let content = useAppSelector((state) => selectLogContentForDate(state, selectedDate))
-  let readOnly = selectedDate != TODAY
+  const selectedDate = useAppSelector(selectPickedDate)
+  const content = useAppSelector((state) => selectLogContentForDate(state, selectedDate))
+  const readOnly = selectedDate != TODAY
 
-  let logContentEditable = useAppSelector(selectLogContentEditable)
+  const logContentEditable = useAppSelector(selectLogContentEditable)
   console.log(`logToday component with logContentText_${logContentEditable}`)
   // let [newContentState, setNewContentState] = useState(logContentText_)
 
-  let logInputControl = useRef<Editor>(null)
+  const logInputControl = useRef<Editor>(null)
 
   // let setNewContentStateMeta = (obj) => {
   //   setNewContentState(obj)
@@ -53,6 +53,7 @@ export default function LogToday({ onLogContentUpdate }) {
           logContent={content}
           readOnly={readOnly}
           refForAutoFocus={logInputControl}
+          onSubmit={handleSubmit}
         ></TipTapEditor>
 
         <LogTodayButton onSubmit={handleSubmit} />

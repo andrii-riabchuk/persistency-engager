@@ -27,7 +27,7 @@ export const contributionCalendarSlice = createSlice({
       state.currentActivity = action.payload
     },
     setTodayDate: (state) => {
-      let [_, TODAY] = timeUtils.lastYearRangeFormatted()
+      const [_, TODAY] = timeUtils.lastYearRangeFormatted()
       state.pickedDate = TODAY
     },
     setPickedDate: (state, action: PayloadAction<string>) => {
@@ -62,9 +62,9 @@ export const selectLogContentEditable = (state: RootState) =>
   state.contributionCalendar.logContentEditable
 
 export const selectLogContentForDate = (state: RootState, date: string) => {
-  let activityName = state.contributionCalendar.currentActivity
+  const activityName = state.contributionCalendar.currentActivity
   if (activityName) {
-    let data = state.contributionCalendar.contributionData[activityName]
+    const data = state.contributionCalendar.contributionData[activityName]
     console.log('selectLogContentForDate', data, date)
     return data[date]?.Content
   }
@@ -82,7 +82,7 @@ export const selectActivityNames = (state: RootState) => {
 
 export const selectContributionData = (state: RootState, activityName: string) => {
   console.log('slice', activityName)
-  let data = state.contributionCalendar.contributionData
+  const data = state.contributionCalendar.contributionData
   if (data && data[activityName]) return data[activityName]
   return []
 }

@@ -15,7 +15,7 @@ function BookIcon() {
 export default function LogTodayButton({ onSubmit }) {
   return (
     <div>
-      <button className="log-button" onClick={onSubmit}>
+      <button className="log-button" id="log-button" onClick={onSubmit}>
         <label>LogToday</label>
         <BookIcon />
       </button>
