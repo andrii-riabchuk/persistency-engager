@@ -38,6 +38,7 @@ export default function LogToday({ onLogContentUpdate }) {
 
   function handleSubmit() {
     if (readOnly) {
+      console.log('CURRENT', logInputControl.current?.view)
       if (logInputControl.current) logInputControl.current.view.dom.focus()
       dispatch(setTodayDate())
     } else {

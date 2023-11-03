@@ -11,7 +11,7 @@ import Blockquote from '@tiptap/extension-blockquote'
 
 import PlaceHolder from '@tiptap/extension-placeholder'
 
-import { EditorContent, createDocument, useEditor } from '@tiptap/react'
+import { Editor, EditorContent, useEditor } from '@tiptap/react'
 import Document from '@tiptap/extension-document'
 import History from '@tiptap/extension-history'
 
@@ -19,11 +19,9 @@ import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 
 import MenuBar from './Menu'
-import {
-  selectLogContentEditable,
-  setLogContentEditable
-} from '@renderer/features/contribution-calendar/contributionCalendarSlice'
-import { useAppDispatch, useAppSelector } from '@renderer/app/hooks'
+import { setLogContentEditable } from '@renderer/features/contribution-calendar/contributionCalendarSlice'
+import { useAppDispatch } from '@renderer/app/hooks'
+import { MutableRefObject } from 'react'
 
 const extensions = [
   Document,
@@ -56,12 +54,24 @@ const extensions = [
   PlaceHolder
 ]
 
-export default function TipTapEditor({ logContent, readOnly, refForAutoFocus, onSubmit }) {
-  const dispatch = useAppDispatch()
-  const logContentEditable = useAppSelector(selectLogContentEditable)
+interface TipTapEditorProps {
+  logContent: string
+  readOnly: boolean
+  refForAutoFocus: MutableRefObject<Editor | null>
+  onSubmit: () => void
+}
 
+export default function TipTapEditor({
+  logContent,
+  readOnly,
+  refForAutoFocus,
+  onSubmit
+}: TipTapEditorProps) {
+  const dispatch = useAppDispatch()
+
+  // const logContentEditable = useAppSelector(selectLogContentEditable)
   // console.log(`TipTapEditor -[${logContent}]; editable[${!readOnly}]`)
-  console.log('Tip tap editor, onsubmit', onSubmit)
+
   const editor = useEditor(
     {
       extensions: extensions,
@@ -84,7 +94,7 @@ export default function TipTapEditor({ logContent, readOnly, refForAutoFocus, on
       }}
       onKeyDown={(event) => {
         if (event.ctrlKey && event.key == 'Enter') {
-          simulateButtonClickVisual()
+          simulateVisualButtonClick()
           onSubmit()
         }
       }}
@@ -95,8 +105,10 @@ export default function TipTapEditor({ logContent, readOnly, refForAutoFocus, on
   )
 }
 
-function simulateButtonClickVisual() {
+function simulateVisualButtonClick() {
   const logButtonElement = document.getElementById('log-button')
+  if (!logButtonElement) return
+
   function setOpacity(value) {
     if (logButtonElement && logButtonElement.style) logButtonElement.style.opacity = value
   }
