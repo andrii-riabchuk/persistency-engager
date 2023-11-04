@@ -12,6 +12,7 @@ import {
 } from '@renderer/features/contribution-calendar/contributionCalendarSlice'
 import { useAppDispatch, useAppSelector } from '@renderer/app/hooks'
 import timeUtils from '../../../utils/time-utils'
+import { setShouldFocusEditor } from '@renderer/features/logToday/logTodaySlice'
 
 export default function LogToday({ onLogContentUpdate }) {
   const dispatch = useAppDispatch()
@@ -41,6 +42,7 @@ export default function LogToday({ onLogContentUpdate }) {
       console.log('CURRENT', logInputControl.current?.view)
       if (logInputControl.current) logInputControl.current.view.dom.focus()
       dispatch(setTodayDate())
+      // dispatch(setShouldFocusEditor(true))
     } else {
       if (tryLogToday(logContentEditable)) onLogContentUpdate()
     }

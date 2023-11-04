@@ -19,9 +19,14 @@ import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 
 import MenuBar from './Menu'
-import { setLogContentEditable } from '@renderer/features/contribution-calendar/contributionCalendarSlice'
-import { useAppDispatch } from '@renderer/app/hooks'
-import { MutableRefObject } from 'react'
+import {
+  selectFocusEditorState,
+  setFocusEditorState,
+  setLogContentEditable
+} from '@renderer/features/contribution-calendar/contributionCalendarSlice'
+import { useAppDispatch, useAppSelector } from '@renderer/app/hooks'
+import { MutableRefObject, useEffect } from 'react'
+import { setShouldFocusEditor, shouldFocusEditor } from '@renderer/features/logToday/logTodaySlice'
 
 const extensions = [
   Document,
@@ -68,6 +73,7 @@ export default function TipTapEditor({
   onSubmit
 }: TipTapEditorProps) {
   const dispatch = useAppDispatch()
+  const focusEditor = useAppSelector(selectFocusEditorState)
 
   // const logContentEditable = useAppSelector(selectLogContentEditable)
   // console.log(`TipTapEditor -[${logContent}]; editable[${!readOnly}]`)
@@ -85,6 +91,26 @@ export default function TipTapEditor({
     [logContent, readOnly]
   )
   refForAutoFocus.current = editor
+
+  if (focusEditor) {
+    // setTimeout(() => editor?.commands.focus('end'), 1000)
+    editor?.commands.focus('end')
+    dispatch(setFocusEditorState(false))
+  }
+
+  useEffect(() => {
+    console.log('adding new content to tiptapEditor', logContent, focusEditor)
+    if (focusEditor) {
+      // setTimeout(() => editor?.commands.focus('end'), 1000)
+      editor?.commands.focus('end')
+      // dispatch(setShouldFocusEditor(false))
+    }
+  }, [logContent])
+
+  // if (focusEditor) {
+  //   editor?.commands.focus('end')
+  //   dispatch(setShouldFocusEditor(false))
+  // }
 
   return (
     <div
