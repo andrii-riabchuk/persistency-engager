@@ -8,6 +8,7 @@ export interface ContributionCalendarState {
   contributionData: object
   contributionDataForCalendar: object
   logContentEditable: string
+  focusEditorState: boolean
 }
 
 const initialState: ContributionCalendarState = {
@@ -15,7 +16,8 @@ const initialState: ContributionCalendarState = {
   pickedDate: '',
   contributionData: {},
   contributionDataForCalendar: [],
-  logContentEditable: ''
+  logContentEditable: '',
+  focusEditorState: false
 }
 
 export const contributionCalendarSlice = createSlice({
@@ -29,6 +31,7 @@ export const contributionCalendarSlice = createSlice({
     setTodayDate: (state) => {
       const [_, TODAY] = timeUtils.lastYearRangeFormatted()
       state.pickedDate = TODAY
+      state.focusEditorState = true
     },
     setPickedDate: (state, action: PayloadAction<string>) => {
       state.pickedDate = action.payload
@@ -41,6 +44,9 @@ export const contributionCalendarSlice = createSlice({
     },
     setContributionDataForCalendar: (state, action: PayloadAction<object>) => {
       state.contributionDataForCalendar = action.payload
+    },
+    setFocusEditorState: (state, action: PayloadAction<boolean>) => {
+      state.focusEditorState = action.payload
     }
   }
 })
@@ -51,7 +57,8 @@ export const {
   setTodayDate,
   setLogContentEditable,
   setContributionData,
-  setContributionDataForCalendar
+  setContributionDataForCalendar,
+  setFocusEditorState
 } = contributionCalendarSlice.actions
 
 export const selectCurrentActivity = (state: RootState) =>
@@ -90,4 +97,7 @@ export const selectContributionData = (state: RootState, activityName: string) =
 export const selectContributionDataForCalendar = (state: RootState, activityName: string) => {
   return state.contributionCalendar.contributionDataForCalendar[activityName]
 }
+
+export const selectFocusEditorState = (state: RootState) =>
+  state.contributionCalendar.focusEditorState
 export default contributionCalendarSlice.reducer
