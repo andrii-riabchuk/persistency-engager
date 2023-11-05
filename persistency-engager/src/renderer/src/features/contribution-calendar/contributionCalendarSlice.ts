@@ -72,7 +72,6 @@ export const selectLogContentForDate = (state: RootState, date: string) => {
   const activityName = state.contributionCalendar.currentActivity
   if (activityName) {
     const data = state.contributionCalendar.contributionData[activityName]
-    console.log('selectLogContentForDate', data, date)
     return data[date]?.Content
   }
   return undefined
@@ -88,7 +87,6 @@ export const selectActivityNames = (state: RootState) => {
 }
 
 export const selectContributionData = (state: RootState, activityName: string) => {
-  console.log('slice', activityName)
   const data = state.contributionCalendar.contributionData
   if (data && data[activityName]) return data[activityName]
   return []

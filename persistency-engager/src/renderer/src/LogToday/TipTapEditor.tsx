@@ -62,55 +62,33 @@ const extensions = [
 interface TipTapEditorProps {
   logContent: string
   readOnly: boolean
-  refForAutoFocus: MutableRefObject<Editor | null>
   onSubmit: () => void
 }
 
-export default function TipTapEditor({
-  logContent,
-  readOnly,
-  refForAutoFocus,
-  onSubmit
-}: TipTapEditorProps) {
+export default function TipTapEditor({ logContent, readOnly, onSubmit }: TipTapEditorProps) {
   const dispatch = useAppDispatch()
   const focusEditor = useAppSelector(selectFocusEditorState)
 
   // const logContentEditable = useAppSelector(selectLogContentEditable)
   // console.log(`TipTapEditor -[${logContent}]; editable[${!readOnly}]`)
-
   const editor = useEditor(
     {
       extensions: extensions,
-      content: logContent,
+      content: logContent ?? '',
       onUpdate({ editor }) {
         dispatch(setLogContentEditable(editor.getHTML()))
-        console.log('tiptap onUpdate', editor.getHTML())
       },
       editable: !readOnly
     },
     [logContent, readOnly]
   )
-  refForAutoFocus.current = editor
-
-  if (focusEditor) {
-    // setTimeout(() => editor?.commands.focus('end'), 1000)
-    editor?.commands.focus('end')
-    dispatch(setFocusEditorState(false))
-  }
 
   useEffect(() => {
-    console.log('adding new content to tiptapEditor', logContent, focusEditor)
-    if (focusEditor) {
-      // setTimeout(() => editor?.commands.focus('end'), 1000)
+    if (!readOnly && focusEditor) {
       editor?.commands.focus('end')
-      // dispatch(setShouldFocusEditor(false))
+      dispatch(setFocusEditorState(false))
     }
-  }, [logContent])
-
-  // if (focusEditor) {
-  //   editor?.commands.focus('end')
-  //   dispatch(setShouldFocusEditor(false))
-  // }
+  }, [editor])
 
   return (
     <div
@@ -126,7 +104,7 @@ export default function TipTapEditor({
       }}
     >
       <MenuBar editor={editor} readOnly={readOnly} />
-      <EditorContent editor={editor} ref={refForAutoFocus} />
+      <EditorContent editor={editor} />
     </div>
   )
 }
