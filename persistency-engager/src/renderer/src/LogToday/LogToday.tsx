@@ -26,23 +26,17 @@ export default function LogToday({ onLogContentUpdate }) {
   console.log(`logToday component with logContentText_${logContentEditable}`)
   // let [newContentState, setNewContentState] = useState(logContentText_)
 
-  const logInputControl = useRef<Editor>(null)
-
   // let setNewContentStateMeta = (obj) => {
   //   setNewContentState(obj)
   // }
 
   useEffect(() => {
-    console.log('useEffect setLogContentText', content)
     dispatch(setLogContentEditable(content))
   }, [content])
 
   function handleSubmit() {
     if (readOnly) {
-      console.log('CURRENT', logInputControl.current?.view)
-      if (logInputControl.current) logInputControl.current.view.dom.focus()
       dispatch(setTodayDate())
-      // dispatch(setShouldFocusEditor(true))
     } else {
       if (tryLogToday(logContentEditable)) onLogContentUpdate()
     }
@@ -55,7 +49,6 @@ export default function LogToday({ onLogContentUpdate }) {
         <TipTapEditor
           logContent={content}
           readOnly={readOnly}
-          refForAutoFocus={logInputControl}
           onSubmit={handleSubmit}
         ></TipTapEditor>
 
